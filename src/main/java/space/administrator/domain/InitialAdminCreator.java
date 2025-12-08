@@ -2,6 +2,7 @@ package space.administrator.domain;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,7 +15,8 @@ public class InitialAdminCreator {
     @Autowired
     private InitialAdminProperties initialAdminProperties;
 
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostConstruct
     public void createInitialAdmin() {
