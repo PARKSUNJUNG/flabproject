@@ -1,0 +1,76 @@
+/* -----------------------------------------
+   기본 컬러 (파스텔 보라 톤)
+------------------------------------------ */
+:root {
+    --purple-main: #eae4f5;
+    --purple-hover: #B79DE8;  /* hover */
+    --purple-focus: #beaedc;   /* focus */
+    --purple-shadow: rgba(200, 177, 243, 0.35);
+}
+
+/* -----------------------------------------
+   input 기본 스타일
+------------------------------------------ */
+.form-control {
+    background-color: transparent !important;
+    border: 2px solid var(--purple-main) !important;
+    border-radius: 8px !important;
+    padding: 12px 14px !important;
+    font-size: 16px;
+    color: #4A3F5A;
+    transition: all 0.25s ease;
+    box-shadow: none !important;
+}
+
+/* placeholder */
+.form-control::placeholder {
+    color: #bdb5cf !important;
+}
+
+/* focus 스타일 */
+.form-control:focus {
+    border-color: var(--purple-focus) !important;
+    box-shadow: 0 0 0 4px var(--purple-shadow) !important;
+    background-color: transparent !important;
+    outline: none !important;
+}
+
+/* -----------------------------------------
+   Chrome 자동완성(Autofill) 제거
+------------------------------------------ */
+input.form-control:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+    box-shadow: 0 0 0px 1000px transparent inset !important;
+    -webkit-text-fill-color: #4A3F5A !important;
+    transition: background-color 5000s ease-in-out 0s; /* 완전 제거 */
+}
+
+/* -----------------------------------------
+   로그인 버튼
+------------------------------------------ */
+.custom-login-btn {
+    background-color: #beaedc !important;
+    border-color: #beaedc !important;
+    color: white !important;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+}
+
+.custom-login-btn:hover {
+    background-color: var(--purple-hover) !important;
+    border-color: var(--purple-hover) !important;
+}
+
+/* -----------------------------------------
+   카드 Hover
+------------------------------------------ */
+.card {
+    transition: all 0.3s ease;
+    border-radius: 16px !important;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+}

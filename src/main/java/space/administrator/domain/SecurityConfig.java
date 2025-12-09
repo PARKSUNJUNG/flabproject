@@ -27,11 +27,12 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/admin/login")
-                        .loginProcessingUrl("/admin/login")
+                        .loginPage("/admin/login") // 로그인 페이지 URL
+                        .loginProcessingUrl("/admin/login") // 로그인 처리 URL
                         .usernameParameter("email")
                         .passwordParameter("password")
                         .defaultSuccessUrl("/admin", true)
+
                 )
                 .logout(logout-> logout
                         .logoutUrl("/admin/logout")
@@ -42,6 +43,7 @@ public class SecurityConfig {
     }
 
     // 사용자
+/*
     @Bean
     @Order(2)
     public SecurityFilterChain userFilterChain(HttpSecurity http) throws Exception {
@@ -66,7 +68,7 @@ public class SecurityConfig {
 
         return http.build();
     }
-
+*/
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
