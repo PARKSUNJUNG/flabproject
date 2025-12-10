@@ -1,0 +1,20 @@
+@font-face {
+    font-family: '문화재돌봄체_Regular';          /* 폰트 이름 */
+    src: url('/fonts/문화재돌봄체_Regular.ttf') format('truetype'); /* 폰트 경로 */
+    font-weight: normal;
+    font-style: normal;
+}
+
+html, body {
+    font-family: '문화재돌봄체_Regular', sans-serif;
+}
+
+/* 자동완성 배경색 제거 */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+    -webkit-text-fill-color: #000 !important; /* 글자색 */
+}
+
