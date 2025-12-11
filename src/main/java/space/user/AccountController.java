@@ -9,18 +9,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/account")
 @RequiredArgsConstructor
 public class AccountController {
 
     private final AccountService accountService;
 
-    @GetMapping("/register")
+    /**
+     * 회원 가입
+     */
+    @GetMapping("/account/register")
     public String registerPage(){
         return "user/account";
     }
 
-    @GetMapping("/checkemail")
+    @GetMapping("/account/checkemail")
     @ResponseBody
     public Map<String, Object> checkEmail(@RequestParam String email){
         boolean exists = accountService.emailExists(email);
@@ -31,10 +33,24 @@ public class AccountController {
         return response;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/account/register")
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     public RegisterUserResponse register(@RequestBody RegisterUserRequest req){
         return accountService.register(req);
     }
+
+    /**
+     * 로그인
+     */
+    @GetMapping("/account/login")
+    public String loginPage() {
+        return "user/login";
+    }
+
+    @GetMapping({"", "/"})
+    public String main() {
+        return "user/main";
+    }
+
 }

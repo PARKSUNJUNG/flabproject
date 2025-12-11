@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
+    <link rel="stylesheet" th:href="@{/css/user/account.css}">
+</head>
+<body>
+
+<div class="register-wrapper">
+    <h2 class="title">로그인</h2>
+
+    <!-- POST /login → Spring Security가 자동 처리 -->
+    <form th:action="@{/account/login}" method="post">
+
+        <div class="form-group">
+            <label for="email">이메일</label>
+            <input type="email" name="email" id="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">비밀번호</label>
+            <input type="password" name="password" id="password" required>
+        </div>
+
+        <button type="submit" class="btn-submit">로그인</button>
+    </form>
+
+    <!-- 회원가입 페이지로 이동 링크 -->
+    <div style="margin-top:20px; text-align:center;">
+        <a th:href="@{/account/register}" style="color:#777; font-size:14px;">
+            아직 회원이 아니신가요? 회원가입
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

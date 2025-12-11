@@ -3,12 +3,14 @@ package space.user;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
 @Getter
+@NoArgsConstructor
 public class User {
 
     @Id

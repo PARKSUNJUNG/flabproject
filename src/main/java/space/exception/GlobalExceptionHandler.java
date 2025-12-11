@@ -19,6 +19,7 @@ public class GlobalExceptionHandler {
     // 그 외 모든 예외
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleException(Exception e) {
+        e.printStackTrace(); // 로그 찍기
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse("서버 오류가 발생했습니다."));
