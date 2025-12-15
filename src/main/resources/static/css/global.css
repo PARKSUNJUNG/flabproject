@@ -18,3 +18,13 @@ input:-webkit-autofill:active {
     -webkit-text-fill-color: #000 !important; /* 글자색 */
 }
 
+.btn-primary {
+    background-color: #B79DE8 !important;
+    border-color: #B79DE8 !important;
+    color: white !important;
+}
+
+.btn-primary:hover {
+    background-color: #a989e8 !important;
+    border-color: #a989e8 !important;
+}
