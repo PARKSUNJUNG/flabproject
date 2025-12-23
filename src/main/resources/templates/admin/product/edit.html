@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>굿즈 수정</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Flatpickr -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" th:href="@{/css/global.css}" />
+
+</head>
+<body>
+
+<div class="container mt-5">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">상품 수정</h2>
+    <a th:href="@{/admin/product/list}" class="btn btn-outline-secondary">목록</a>
+  </div>
+
+  <form th:action="@{/admin/product/{id}/edit(id=${product.id})}"
+        method="post"
+        enctype="multipart/form-data"
+        id="editForm">
+
+    <input type="hidden" name="_method" value="put"/>
+
+    <!-- 기본 정보 -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title mb-3">기본 정보</h5>
+
+        <div class="mb-3">
+          <label class="form-label">상품명</label>
+          <input type="text" class="form-control" name="productName"
+                 th:value="${product.productName}" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">카테고리</label>
+          <select class="form-select" name="categoryId">
+            <option th:each="c : ${categories}"
+                    th:value="${c.id}"
+                    th:text="${c.name}"
+                    th:selected="${c.id == product.category.id}">
+            </option>
+          </select>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">가격</label>
+            <input type="number" class="form-control" name="price"
+                   th:value="${product.price}" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">재고</label>
+            <input type="number" class="form-control" name="stock" id="stockInput"
+                   th:value="${product.stock}" required>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 썸네일 -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title mb-3">대표 썸네일</h5>
+        <img th:src="${product.thumbnail}" class="img-thumbnail mb-3 thumbnail-preview">
+        <input type="file" class="form-control" name="thumbnail" accept="image/*">
+      </div>
+    </div>
+
+    <!-- 판매 기간 -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title mb-3">판매 기간</h5>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">판매 시작</label>
+            <input type="text" class="form-control" id="saleStart" name="saleStart"
+                   th:value="${#temporals.format(product.saleStart, 'yyyy년 MM월 dd일 HH:mm')}">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">판매 종료</label>
+            <input type="text" class="form-control" id="saleEnd" name="saleEnd"
+                   th:value="${#temporals.format(product.saleEnd, 'yyyy년 MM월 dd일 HH:mm')}">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 옵션 재고 -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="card-title mb-0">옵션 재고</h5>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="useOption"
+                   name="useOption" th:checked="${product.useOption}">
+            <label class="form-check-label" for="useOption">옵션 사용</label>
+          </div>
+        </div>
+
+        <table class="table table-bordered align-middle" id="optionTable">
+          <thead>
+          <tr>
+            <th>옵션 조합</th>
+            <th style="width:120px">재고</th>
+            <th style="width:80px"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <!-- 기존 옵션 렌더링 -->
+          <tr th:each="opt, stat : ${product.optionStock}">
+            <td>
+              <input type="text" class="form-control"
+                     th:name="|optionStock[${stat.index}].optCombination|"
+                     th:value="${opt.optCombination}">
+            </td>
+            <td>
+              <input type="number" class="form-control"
+                     th:name="|optionStock[${stat.index}].stock|"
+                     th:value="${opt.stock}">
+            </td>
+            <td class="text-center">
+              <button type="button" class="btn btn-sm btn-outline-danger"
+                      onclick="removeOptionRow(this)">삭제</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+
+        <button type="button" class="btn btn-sm btn-outline-primary" onclick="addOptionRow()">
+          옵션 추가
+        </button>
+      </div>
+    </div>
+
+    <!-- 상품 콘텐츠 -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="card-title mb-0">상품 상세 콘텐츠</h5>
+          <button type="button" class="btn btn-sm btn-outline-primary" onclick="addContent()">
+            콘텐츠 추가
+          </button>
+        </div>
+
+        <div id="content-area">
+          <div class="content-block border rounded p-3 mb-3"
+               th:each="c, stat : ${product.contents}">
+
+            <div class="row mb-2">
+              <div class="col-md-4">
+                <select class="form-select"
+                        th:name="|productContents[${stat.index}].type|"
+                        onchange="toggleContentType(this)">
+                  <option value="text" th:selected="${c.type=='text'}">텍스트</option>
+                  <option value="image" th:selected="${c.type=='image'}">이미지</option>
+                  <option value="html" th:selected="${c.type=='html'}">HTML</option>
+                </select>
+              </div>
+              <div class="col-md-8 text-end">
+                <button type="button" class="btn btn-sm btn-outline-danger"
+                        onclick="removeContent(this)">삭제</button>
+              </div>
+            </div>
+
+            <!-- text / html -->
+            <textarea class="form-control mb-2"
+                      th:if="${c.type != 'image'}"
+                      th:name="|productContents[${stat.index}].contents|"
+                      th:text="${c.contents}"></textarea>
+
+            <!-- image -->
+            <div th:if="${c.type == 'image'}">
+              <img th:src="${c.contents}" class="img-fluid mb-2">
+              <input type="file" class="form-control"
+                     th:name="|productContents[${stat.index}].file|" accept="image/*">
+              <input type="hidden"
+                     th:name="|productContents[${stat.index}].contents|"
+                     th:value="${c.contents}">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 저장 버튼 -->
+    <div class="text-end mb-5">
+      <button type="submit" class="btn btn-primary btn-lg">수정 저장</button>
+    </div>
+
+  </form>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+    flatpickr("#saleStart", {
+        enableTime: true,
+        dateFormat: "Y년 m월 d일 H:i"
+    });
+
+    flatpickr("#saleEnd", {
+        enableTime: true,
+        dateFormat: "Y년 m월 d일 H:i"
+    });
+
+    // ------------------------
+    // 옵션 사용 체크시 재고/옵션 테이블 토글
+    // ------------------------
+    function toggleStockByOption() {
+        const useOptionCheckbox = document.getElementById('useOption');
+        const stockInputWrapper = document.getElementById('stockInput').closest('.col-md-6.mb-3');
+        const stockInput = document.getElementById('stockInput');
+        const optionTable = document.getElementById('optionTable');
+
+        if (useOptionCheckbox.checked) {
+            // 옵션 사용
+            stockInput.value = 0;
+            stockInput.disabled = true;
+            stockInputWrapper.style.display = 'none';
+            optionTable.style.display = 'table';
+        } else {
+            // 옵션 미사용
+            stockInput.disabled = false;
+            stockInputWrapper.style.display = 'block';
+            optionTable.style.display = 'none';
+        }
+    }
+
+    document.getElementById('useOption').addEventListener('change', toggleStockByOption);
+    window.addEventListener('DOMContentLoaded', toggleStockByOption);
+
+    // ------------------------
+    // 옵션 row 추가/삭제
+    // ------------------------
+    let optionIndex = document.querySelectorAll('#optionTable tbody tr').length;
+
+    function addOptionRow() {
+        const useOptionCheckbox = document.getElementById('useOption');
+        if (!useOptionCheckbox.checked) {
+            useOptionCheckbox.checked = true;
+            toggleStockByOption();
+        }
+
+        const tbody = document.querySelector('#optionTable tbody');
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>
+                <input type="text" class="form-control"
+                       name="optionStock[${optionIndex}].optCombination">
+            </td>
+            <td>
+                <input type="number" class="form-control"
+                       name="optionStock[${optionIndex}].stock">
+            </td>
+            <td class="text-center">
+                <button type="button" class="btn btn-sm btn-outline-danger"
+                        onclick="removeOptionRow(this)">삭제</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+        optionIndex++;
+    }
+
+    function removeOptionRow(btn) {
+        btn.closest('tr').remove();
+        reindexOptions();
+    }
+
+    function reindexOptions() {
+        document.querySelectorAll('#optionTable tbody tr').forEach((tr, idx) => {
+            tr.querySelectorAll('input').forEach(input => {
+                input.name = input.name.replace(/optionStock\[\d+]/, `optionStock[${idx}]`);
+            });
+        });
+    }
+
+    // ------------------------
+    // 콘텐츠 추가/삭제/타입 변경
+    // ------------------------
+    let contentIndex = document.querySelectorAll('#content-area .content-block').length;
+    function addContent() {
+        const area = document.getElementById('content-area');
+        const index = contentIndex
+
+        const div = document.createElement('div');
+        div.className = 'content-block border rounded p-3 mb-3';
+
+        div.innerHTML = `
+            <div class="mb-2">
+                <label class="form-label">타입</label>
+                <select class="form-select content-type"
+                        name="productContents[${index}].type"
+                        onchange="toggleContentType(this)">
+                    <option value="text">텍스트</option>
+                    <option value="image">이미지</option>
+                    <option value="html">HTML</option>
+                </select>
+            </div>
+
+            <div class="content-text">
+                <textarea class="form-control"
+                          rows="4"
+                          name="productContents[${index}].contents"></textarea>
+            </div>
+
+            <div class="content-image d-none">
+                <input type="file"
+                       class="form-control"
+                       name="productContents[${index}].file"
+                       accept="image/*">
+            </div>
+
+            <button type="button"
+                    class="btn btn-sm btn-outline-danger mt-2"
+                    onclick="removeContent(this)">
+                삭제
+            </button>
+        `;
+        area.appendChild(div);
+        contentIndex++;
+    }
+
+    function removeContent(btn) {
+        const area = document.getElementById('content-area');
+        btn.closest('.content-block').remove();
+        reindexContents(area);
+    }
+
+    function toggleContentType(select) {
+        const item = select.closest('.content-block');
+        const textBox = item.querySelector('.content-text');
+        const imageBox = item.querySelector('.content-image');
+
+        if (select.value === 'image') {
+            textBox.classList.add('d-none');
+            imageBox.classList.remove('d-none');
+        } else {
+            textBox.classList.remove('d-none');
+            imageBox.classList.add('d-none');
+        }
+    }
+
+    function reindexContents(area) {
+        [...area.children].forEach((item, idx) => {
+            item.querySelectorAll('select, textarea, input').forEach(el => {
+                if (!el.name) return;
+                el.name = el.name.replace(/productContents\[\d+]/, `productContents[${idx}]`);
+            });
+        });
+    }
+</script>
+
+
+</body>
+</html>
