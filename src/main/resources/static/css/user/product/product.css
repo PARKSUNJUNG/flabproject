@@ -1,0 +1,41 @@
+.category-sidebar {
+    border-right: 1px solid #eee;
+}
+
+.category-link {
+    text-decoration: none;
+    color: #333;
+}
+
+.list-group-item.active {
+    background-color: #a989e8;
+    border-color: #a989e8;
+}
+
+.list-group-item.active .category-link {
+    color: #fff;
+}
+
+.product-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-grid {
+    margin-bottom: 40px;
+}
+
+/* 선택된 페이지 */
+.pagination .page-item.active .page-link {
+    background-color: #B79DE8;
+    border-color: #B79DE8;
+}

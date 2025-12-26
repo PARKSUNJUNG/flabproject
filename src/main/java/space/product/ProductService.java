@@ -8,6 +8,8 @@ import space.file.FileService;
 import space.product.category.Category;
 import space.product.category.CategoryRepository;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -111,6 +113,11 @@ public class ProductService {
             String thumbnailUrl = fileService.saveFile(req.getThumbnail(), FileCategory.PRODUCT_THUMBNAIL);
             product.setThumbnail(thumbnailUrl);
         }
+
+        // 판매기간 update
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm");
+        product.setSaleStart(LocalDateTime.parse(req.getSaleStart() , formatter));
+        product.setSaleEnd(LocalDateTime.parse(req.getSaleEnd(), formatter));
 
         // 옵션 재고 update
         if(req.isUseOption()){

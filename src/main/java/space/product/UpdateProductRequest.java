@@ -18,4 +18,7 @@ public class UpdateProductRequest {
 
     private List<ProductOptionStockRequest> optionStock;
     private List<ProductContentsRequest> productContents;
+
+    private String saleStart;
+    private String saleEnd;
 }

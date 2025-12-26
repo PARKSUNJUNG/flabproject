@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>굿즈 목록</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
+    <link rel="stylesheet" th:href="@{/css/user/product/product.css}">
+</head>
+
+<body>
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- 좌측 카테고리 -->
+        <aside class="col-md-2 category-sidebar">
+            <ul class="list-group">
+                <li class="list-group-item"
+                    th:classappend="${categoryId == null} ? 'active'">
+                    <a th:href="@{/products}" class="category-link">전체</a>
+                </li>
+
+                <li class="list-group-item"
+                    th:each="cat : ${categories}"
+                    th:classappend="${categoryId == cat.id} ? 'active'">
+                    <a th:href="@{/products(categoryId=${cat.id})}"
+                       th:text="${cat.name}"
+                       class="category-link"></a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- 우측 상품 목록 -->
+        <section class="col-md-10 d-flex flex-column min-vh-100">
+            <div class="row g-4 product-grid">
+                <div class="col-md-3"
+                     th:each="product : ${result.products}">
+                    <div class="card product-card h-100">
+                        <img th:src="${product.thumbnail}"
+                             class="card-img-top"
+                             alt="상품 이미지">
+
+                        <div class="card-body">
+                            <h6 class="card-title"
+                                th:text="${product.productName}"></h6>
+
+                            <p class="card-text text-muted small"
+                               th:text="${product.summary}"></p>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold"
+                                      th:text="${#numbers.formatInteger(product.price, 3, 'COMMA')} + '원'"></span>
+
+                                <span class="badge"
+                                      th:classappend="${product.stockStatus.name() == 'IN_STOCK'} ? 'bg-success' : 'bg-secondary'"
+                                      th:text="${product.stockStatus == T(space.product.StockStatus).IN_STOCK ? '재고 있음' : '품절'}">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 페이지네이션 -->
+            <nav class="mt-auto mb-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"
+                        th:classappend="${result.pageNumber == 1} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/products(page=${result.pageNumber - 1}, categoryId=${categoryId})}">
+                            이전
+                        </a>
+                    </li>
+
+                    <li class="page-item"
+                        th:each="i : ${#numbers.sequence(1, result.totalPages)}"
+                        th:classappend="${i == result.pageNumber} ? 'active'">
+                        <a class="page-link"
+                           th:text="${i}"
+                           th:href="@{/products(page=${i}, categoryId=${categoryId})}">
+                        </a>
+                    </li>
+
+                    <li class="page-item"
+                        th:classappend="${result.pageNumber == result.totalPages} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/products(page=${result.pageNumber + 1}, categoryId=${categoryId})}">
+                            다음
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </section>
+    </div>
+</div>
+</body>
+</html>
