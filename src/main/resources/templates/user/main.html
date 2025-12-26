@@ -2,11 +2,16 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>사용자 홈페이지</title>
+    <title>Space</title>
 
     <link rel="stylesheet" th:href="@{/css/global.css}" />
 </head>
 <body>
-<h1>메인 페이지</h1>
+<div th:replace="user/fragments/header :: header"></div>
+
+<main>
+    <h1>메인 페이지</h1>
+</main>
+
 </body>
 </html>
