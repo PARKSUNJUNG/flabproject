@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- 사이드바 -->
+<aside class="admin-sidebar" th:fragment="adminSidebar(activeMenu)">
+
+    <h1 class="sidebar-title">ADMIN</h1>
+
+    <nav class="sidebar-menu">
+
+        <div class="menu-group">
+            <a th:href="@{/admin}"
+               class="menu-item"
+               th:classappend="${activeMenu == 'home'} ? ' active'">
+                관리자 홈
+            </a>
+        </div>
+
+        <div class="menu-group">
+            <div class="menu-group-title">Update</div>
+
+            <a th:href="@{/admin/product/category/list}"
+               class="menu-item"
+               th:classappend="${activeMenu == 'category'} ? ' active'">
+                굿즈 카테고리
+            </a>
+
+            <a th:href="@{/admin/product/list}"
+               class="menu-item"
+               th:classappend="${activeMenu == 'product'} ? ' active'">
+                굿즈
+            </a>
+        </div>
+
+    </nav>
+</aside>
+
+<!-- 컨텐츠 래퍼 (slot 개념) -->
+<main class="admin-content">
+    <th:block th:replace="~{::body}" />
+</main>
+
+</body>
+</html>

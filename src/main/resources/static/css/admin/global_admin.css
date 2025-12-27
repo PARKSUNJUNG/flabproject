@@ -1,0 +1,94 @@
+@font-face {
+    font-family: '문화재돌봄체_Regular';          /* 폰트 이름 */
+    src: url('/fonts/문화재돌봄체_Regular.ttf') format('truetype'); /* 폰트 경로 */
+    font-weight: normal;
+    font-style: normal;
+}
+
+html, body {
+    font-family: '문화재돌봄체_Regular', sans-serif;
+}
+
+/* 자동완성 배경색 제거 */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+    -webkit-text-fill-color: #000 !important; /* 글자색 */
+}
+
+.btn-primary {
+    background-color: #B79DE8 !important;
+    border-color: #B79DE8 !important;
+    color: white !important;
+}
+
+.btn-primary:hover {
+    background-color: #a989e8 !important;
+    border-color: #a989e8 !important;
+}
+
+/* admin sidebar */
+/* 사이드바 */
+.admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 240px;
+    height: 100vh;
+    background-color: #ffffff;
+    border-right: 1px solid #e5e7eb;
+    padding: 24px 16px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.admin-content {
+    margin-left: 240px;
+    padding: 32px;
+}
+
+/* 로고 */
+.sidebar-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 32px;
+    color: #212529;
+}
+
+/* 메뉴 영역 */
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* 메뉴 그룹 제목 */
+.menu-group-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #6c757d;
+    margin-bottom: 8px;
+}
+
+/* 메뉴 아이템 */
+.menu-item {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: #212529;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.15s ease;
+}
+
+.menu-item:hover {
+    background-color: #f1f3f5;
+}
+
+/* 활성 메뉴 */
+.menu-item.active {
+    background-color: #e7f1ff;
+    color: #0d6efd;
+}

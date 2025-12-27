@@ -3,9 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>관리자 홈페이지</title>
-    <link rel="stylesheet" th:href="@{/css/global.css}" />
+
+    <link rel="stylesheet" th:href="@{/css/admin/global_admin.css}" />
 </head>
 <body>
+<th:block th:replace="admin/fragments/sidebar :: adminSidebar('home')"/>
+
+<main class="admin-content">
+    <div class="container mt-5">
+        <h2 class="mb-4 fw-bold">home</h2>
+    </div>
+</main>
 
 </body>
 </html>
