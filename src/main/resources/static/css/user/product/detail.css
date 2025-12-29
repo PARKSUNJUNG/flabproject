@@ -1,0 +1,25 @@
+.product-thumbnail {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.price {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.out-of-stock {
+    color: #dc3545;
+    font-weight: bold;
+}
+#scrollTopBtn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+}
+.buy-area {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}

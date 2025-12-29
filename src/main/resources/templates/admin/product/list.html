@@ -45,10 +45,7 @@
                     <td th:text="${iter.index + 1}"></td>
 
                     <td>
-                        <a th:href="@{/admin/product/{id}(id=${product.id})}"
-                           class="product-name">
-                            <span th:text="${product.productName}"></span>
-                        </a>
+                        <span th:text="${product.productName}"></span>
                     </td>
 
                     <td th:text="${product.categoryName}"></td>
