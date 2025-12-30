@@ -77,7 +77,7 @@
                         <button class="btn btn-outline-secondary w-50">
                             장바구니
                         </button>
-                        <button class="btn btn-primary w-50">
+                        <button class="btn btn-primary w-50" id="orderBtn">
                             구매하기
                         </button>
                     </div>
@@ -123,10 +123,21 @@
     const selectedOptions = new Map();
 
     function updateTotalPrice() {
-        let total = 0;
-        selectedOptions.forEach(opt => {
-            total += basePrice * opt.qty;
-        });
+
+        // 옵션 상품
+        if([[${product.useOption}]]) {
+            let total = 0;
+            selectedOptions.forEach(opt => {
+                total += basePrice * opt.qty;
+            });
+            totalPriceEl.innerText = total.toLocaleString();
+            return;
+        }
+
+        // 옵션 미사용 상품
+        const quantityInput = document.getElementById("quantity");
+        const qty = Number(quantityInput.value);
+        const total = basePrice * qty;
         totalPriceEl.innerText = total.toLocaleString();
     }
 
@@ -176,6 +187,42 @@
         selectedOptionsEl.appendChild(optionDiv);
         updateTotalPrice();
         optionSelect.value = "";
+    });
+
+    // 구매하기 버튼 눌렀을 때 실행되는 동작
+    const productId = [[${product.productId}]];
+    const orderBtn = document.getElementById("orderBtn");
+
+    // 옵션 미사용 상품
+    const quantityInput = document.getElementById("quantity");
+
+    quantityInput?.addEventListener("change", ()=>{
+        updateTotalPrice();
+    });
+
+    orderBtn?.addEventListener("click", ()=>{
+
+        // 옵션 사용하는 상품
+        if([[${product.useOption}]]){
+
+            if(selectedOptions.size === 0) {
+                alert("옵션을 선택해주세요.");
+                return;
+            }
+
+            const params = new URLSearchParams();
+
+            selectedOptions.forEach((value, optionId) => {
+                params.append("optionIds", optionId);
+            });
+
+            location.href = `/product/${productId}/order?`+params.toString();
+            return;
+        }
+
+        const quantity = quantityInput.value;
+
+        location.href = `/product/${productId}/order?quantity=${quantity}`
     });
 </script>
 
