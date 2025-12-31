@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 public class RegisterUserRequest {
     private String email;
     private String password;
+    private String name;
     private String nickname;
     private String gender;
     private String phone;
@@ -19,6 +20,7 @@ public class RegisterUserRequest {
         return User.builder()
                 .email(this.email)
                 .password(encrypedPassword)
+                .name(this.name)
                 .nickname(this.nickname)
                 .gender(this.gender)
                 .phone(this.phone)
@@ -33,6 +35,7 @@ public class RegisterUserRequest {
         return "RegisterUserRequest{" +
                 "email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", gender='" + gender + '\'' +
                 ", phone='" + phone + '\'' +

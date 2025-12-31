@@ -24,6 +24,9 @@ public class User {
     private String password;
 
     @Column(nullable = false, length = 50)
+    private String name;
+
+    @Column(nullable = false, length = 50)
     private String nickname;
 
     @Column(length = 10)
@@ -40,9 +43,10 @@ public class User {
     private LocalDateTime createAt;
 
     @Builder
-    public User(String email, String password, String nickname, String gender, String phone, String address, String addressDetail, LocalDateTime createAt) {
+    public User(String email, String password, String name, String nickname, String gender, String phone, String address, String addressDetail, LocalDateTime createAt) {
         this.email = email;
         this.password = password;
+        this.name = name;
         this.nickname = nickname;
         this.gender = gender;
         this.phone = phone;

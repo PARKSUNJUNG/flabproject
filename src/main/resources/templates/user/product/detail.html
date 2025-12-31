@@ -101,6 +101,11 @@
                 <div th:if="${content.type == 'text'}" class="mb-4">
                     <p th:utext="${content.contents}"></p>
                 </div>
+
+                <!-- html -->
+                <div th:if="${content.type == 'html'}" class="mb-4"
+                     th:utext="${content.contents}">
+                </div>
             </div>
         </div>
     </div>
@@ -214,6 +219,7 @@
 
             selectedOptions.forEach((value, optionId) => {
                 params.append("optionIds", optionId);
+                params.append("quantities", value.qty);
             });
 
             location.href = `/product/${productId}/order?`+params.toString();

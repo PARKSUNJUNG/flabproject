@@ -27,6 +27,11 @@
         </div>
 
         <div class="form-group">
+            <label for="name">이름</label>
+            <input type="text" id="name" required>
+        </div>
+
+        <div class="form-group">
             <label for="nickname">닉네임</label>
             <input type="text" id="nickname" required>
         </div>
@@ -101,6 +106,7 @@
         const data = {
             email: emailInput.value,
             password: document.getElementById("password").value,
+            name: document.getElementById("name").value,
             nickname: document.getElementById("nickname").value,
             gender: document.getElementById("gender").value,
             phone: document.getElementById("phone").value,

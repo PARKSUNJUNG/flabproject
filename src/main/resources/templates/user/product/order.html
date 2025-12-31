@@ -41,7 +41,8 @@
                                             옵션명
                                         </span>
                                         <span class="text-muted">
-                                            재고: <span th:text="${opt.stock}">0</span>
+                                            수량:
+                                            <span th:text="${opt.quantity}">1</span> 개
                                         </span>
                                     </div>
                                 </li>
@@ -59,32 +60,78 @@
                 </div>
             </div>
 
-            <!-- 우측: 배송 정보 -->
-            <div class="col-md-6">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title mb-3">배송 정보</h5>
+            <!-- 배송 정보 -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">배송 정보</h5>
 
-                        <form id="orderForm">
-                            <div class="mb-3">
+                    <form id="orderForm">
+
+                        <!-- 주문자 정보 -->
+                        <h6 class="mb-3">주문자 정보</h6>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
                                 <label class="form-label">주문자명</label>
-                                <input type="text" class="form-control" name="ordererName">
+                                <input type="text"
+                                       class="form-control"
+                                       name="ordererName"
+                                       th:value="${order.ordererName}"
+                                       readonly>
                             </div>
 
-                            <div class="mb-3">
+                            <div class="col-md-6">
                                 <label class="form-label">연락처</label>
-                                <input type="text" class="form-control" name="phone">
+                                <input type="text"
+                                       class="form-control"
+                                       name="ordererPhone"
+                                       th:value="${order.ordererPhone}"
+                                       readonly>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <!-- 수령인 정보 -->
+                        <h6 class="mb-3">수령인 정보</h6>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">수령인명</label>
+                                <input type="text"
+                                       class="form-control"
+                                       name="receiverName"
+                                       th:value="${order.receiverName}">
                             </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">주소</label>
-                                <input type="text" class="form-control" name="address">
+                            <div class="col-md-6">
+                                <label class="form-label">연락처</label>
+                                <input type="text"
+                                       class="form-control"
+                                       name="receiverPhone"
+                                       th:value="${order.receiverPhone}">
                             </div>
-                        </form>
-                    </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">주소</label>
+                            <input type="text"
+                                   class="form-control"
+                                   name="address"
+                                   th:value="${order.address}">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">상세주소</label>
+                            <input type="text"
+                                   class="form-control"
+                                   name="addressDetail"
+                                   th:value="${order.addressDetail}">
+                        </div>
+
+                    </form>
                 </div>
             </div>
-
         </div>
 
         <!-- 결제 요약 -->
@@ -94,7 +141,8 @@
                     총 결제 금액
                 </h5>
                 <h4 class="text-primary mb-0">
-                    <span id="totalPrice">0</span> 원
+                    <span id="totalPrice"
+                          th:text="${order.totalPrice}">0</span> 원
                 </h4>
             </div>
         </div>
@@ -110,24 +158,6 @@
 </main>
 
 <script>
-    (function () {
-        const basePrice = Number(document.getElementById('basePrice').innerText);
-        const useOption = [[${order.useOption}]];
-
-        let total = 0;
-
-        if (useOption) {
-            const optionCount = [[${order.selectedOptions.size()}]];
-            total = basePrice * optionCount;
-        } else {
-            const quantity = [[${order.quantity}]];
-            total = basePrice * quantity;
-        }
-
-        document.getElementById('totalPrice').innerText =
-            total.toLocaleString();
-    })();
-
     function submitOrder() {
         alert("주문 API 연결 예정");
     }
