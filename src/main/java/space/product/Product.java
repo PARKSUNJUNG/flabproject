@@ -56,6 +56,20 @@ public class Product {
         content.setProduct(this); // DB FK 상태
     }
 
+    public void decreaseStock(int quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("차감 수량은 0보다 커야 합니다.");
+        }
+
+        if (this.stock < quantity) {
+            throw new IllegalStateException(
+                    "재고 부족 (현재 재고: " + this.stock + ", 요청 수량: " + quantity + ")"
+            );
+        }
+
+        this.stock -= quantity;
+    }
+
     @Builder
     public Product(String productName, String summary, Integer price, Integer stock, boolean useOption, LocalDateTime saleStart, LocalDateTime saleEnd, String productSpec) {
         this.productName = productName;

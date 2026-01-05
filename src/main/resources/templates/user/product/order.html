@@ -65,7 +65,19 @@
                 <div class="card-body">
                     <h5 class="card-title mb-4">배송 정보</h5>
 
-                    <form id="orderForm">
+                    <form id="orderForm" th:action="@{/orders}" method="post">
+
+                        <input type="hidden" name="productId" th:value="${order.productId}">
+                        <div th:each="opt, stat : ${order.selectedOptions}">
+                            <input type="hidden"
+                                   th:name="|options[${stat.index}].optionStockId|"
+                                   th:value="${opt.optionStockId}"/>
+
+                            <input type="hidden"
+                                   th:name="|options[${stat.index}].quantity|"
+                                   th:value="${opt.quantity}"/>
+                        </div>
+                        <input type="hidden" name="quantity" th:value="${order.quantity}">
 
                         <!-- 주문자 정보 -->
                         <h6 class="mb-3">주문자 정보</h6>
@@ -159,7 +171,7 @@
 
 <script>
     function submitOrder() {
-        alert("주문 API 연결 예정");
+        document.getElementById("orderForm").submit();
     }
 </script>
 

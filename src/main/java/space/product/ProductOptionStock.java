@@ -23,6 +23,13 @@ public class ProductOptionStock {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    public void decrease(int quantity) {
+        if(this.stock < quantity) {
+            throw new IllegalStateException("재고 부족");
+        }
+        this.stock -= quantity;
+    }
+
     @Builder
     public ProductOptionStock(String optCombination, Integer stock, Product product) {
         this.optCombination = optCombination;
