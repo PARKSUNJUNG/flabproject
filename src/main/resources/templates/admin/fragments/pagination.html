@@ -1,0 +1,25 @@
+<nav xmlns:th="http://www.thymeleaf.org"
+     th:fragment="pagination(page, url)">
+
+    <ul class="pagination justify-content-center">
+
+        <li class="page-item" th:classappend="${!page.hasPrev} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{${url}(page=${page.page - 1})}">이전</a>
+        </li>
+
+        <li class="page-item"
+            th:each="i : ${#numbers.sequence(1, page.totalPages)}"
+            th:classappend="${i == page.page} ? 'active'">
+            <a class="page-link"
+               th:href="@{${url}(page=${i})}"
+               th:text="${i}">1</a>
+        </li>
+
+        <li class="page-item" th:classappend="${!page.hasNext} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{${url}(page=${page.page + 1})}">다음</a>
+        </li>
+
+    </ul>
+</nav>

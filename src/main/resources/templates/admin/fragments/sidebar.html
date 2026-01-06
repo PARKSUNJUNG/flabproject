@@ -17,7 +17,7 @@
         </div>
 
         <div class="menu-group">
-            <div class="menu-group-title">Update</div>
+            <div class="menu-group-title">MD</div>
 
             <a th:href="@{/admin/product/category/list}"
                class="menu-item"
@@ -29,6 +29,12 @@
                class="menu-item"
                th:classappend="${activeMenu == 'product'} ? ' active'">
                 굿즈
+            </a>
+
+            <a th:href="@{/admin/orders}"
+               class="menu-item"
+               th:classappend="${activeMenu == 'order'} ? ' active'">
+                굿즈 주문 목록
             </a>
         </div>
 

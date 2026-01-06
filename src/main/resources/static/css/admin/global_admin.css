@@ -7,6 +7,8 @@
 
 html, body {
     font-family: '문화재돌봄체_Regular', sans-serif;
+    height: 100%;
+    margin: 0;
 }
 
 /* 자동완성 배경색 제거 */
@@ -28,9 +30,13 @@ input:-webkit-autofill:active {
     background-color: #a989e8 !important;
     border-color: #a989e8 !important;
 }
+/* 전체 관리자 레이아웃 */
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+}
 
 /* admin sidebar */
-/* 사이드바 */
 .admin-sidebar {
     position: fixed;
     top: 0;
@@ -44,9 +50,20 @@ input:-webkit-autofill:active {
     z-index: 1000;
 }
 
+/* 메인 콘텐츠 */
 .admin-content {
     margin-left: 240px;
     padding: 32px;
+
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 페이지네이션 */
+.pagination-wrapper {
+    margin-top: auto;
+    padding-bottom: 16px;
 }
 
 /* 로고 */

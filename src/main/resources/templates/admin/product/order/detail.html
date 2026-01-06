@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>주문 상세</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/admin/global_admin.css}" />
+</head>
+<body>
+<th:block th:replace="admin/fragments/sidebar :: adminSidebar('order')"/>
+
+<main class="admin-content">
+    <div class="container mt-5">
+
+        <h2 class="fw-bold">🧾 주문 상세</h2>
+
+        <!-- 주문 정보 -->
+        <div class="card mb-4">
+            <div class="card-header">주문 정보</div>
+            <div class="card-body">
+                <p><strong>주문번호:</strong> <span th:text="${order.orderId}"></span></p>
+                <p><strong>주문상태:</strong> <span th:text="${order.status}"></span></p>
+                <p><strong>주문일시:</strong>
+                    <span th:text="${#temporals.format(order.orderedAt, 'yyyy-MM-dd HH:mm')}"></span>
+                </p>
+            </div>
+        </div>
+
+        <!-- 주문자 / 배송 -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">주문자 정보</div>
+                    <div class="card-body">
+                        <p th:text="'이름: ' + ${order.ordererName}"></p>
+                        <p th:text="'연락처: ' + ${order.ordererPhone}"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">배송 정보</div>
+                    <div class="card-body">
+                        <p th:text="'받는 사람: ' + ${order.receiverName}"></p>
+                        <p th:text="'연락처: ' + ${order.receiverPhone}"></p>
+                        <p th:text="'주소: ' + ${order.address + ' ' + order.addressDetail}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 주문 상품 -->
+        <div class="card mb-4">
+            <div class="card-header">주문 상품</div>
+            <div class="card-body">
+
+                <div th:each="item : ${order.items}" class="mb-4">
+                    <h5 th:text="${item.productName}"></h5>
+                    <p th:text="'가격: ' + ${#numbers.formatInteger(item.price, 3, 'COMMA')} + '원'"></p>
+
+                    <table class="table table-sm">
+                        <thead>
+                        <tr>
+                            <th>옵션명</th>
+                            <th>수량</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="opt : ${item.options}">
+                            <td th:text="${opt.optionName}"></td>
+                            <td th:text="${opt.quantity}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <p><strong>상품 총 수량:</strong>
+                        <span th:text="${item.totalQuantity}"></span>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 총 금액 -->
+        <div class="text-end mb-4">
+            <h4>
+                총 결제 금액 :
+                <span th:text="${#numbers.formatInteger(order.totalPrice, 3, 'COMMA')} + '원'"></span>
+            </h4>
+        </div>
+
+        <div class="text-end">
+            <a href="/admin/orders" class="btn btn-secondary">목록으로</a>
+        </div>
+
+    </div>
+</main>
+
+</body>
+</html>

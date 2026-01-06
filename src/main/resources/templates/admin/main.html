@@ -7,13 +7,15 @@
     <link rel="stylesheet" th:href="@{/css/admin/global_admin.css}" />
 </head>
 <body>
-<th:block th:replace="admin/fragments/sidebar :: adminSidebar('home')"/>
+<div class="admin-layout">
+    <th:block th:replace="admin/fragments/sidebar :: adminSidebar('home')"/>
 
-<main class="admin-content">
-    <div class="container mt-5">
-        <h2 class="mb-4 fw-bold">home</h2>
-    </div>
-</main>
+    <main class="admin-content d-flex flex-column">
+        <div class="container mt-5 flex-grow-1">
+            <h2 class="mb-4 fw-bold">home</h2>
+        </div>
+    </main>
 
+</div>
 </body>
 </html>
