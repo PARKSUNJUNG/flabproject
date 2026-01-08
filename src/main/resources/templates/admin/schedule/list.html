@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" th:href="@{/css/admin/global_admin.css}" />
+</head>
+<body>
+
+<div class="admin-layout">
+    <th:block th:replace="admin/fragments/sidebar :: adminSidebar('schedule')"/>
+
+    <main class="admin-content d-flex flex-column">
+        <div class="container mt-5 flex-grow-1">
+            <h2 class="mb-4 fw-bold">Schedule</h2>
+        </div>
+    </main>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const message = /*[[${message}]]*/ null;
+
+    if (message) {
+        alert(message);
+    }
+    /*]]>*/
+</script>
+
+</body>
+</html>

@@ -38,6 +38,22 @@
             </a>
         </div>
 
+        <div class="menu-group">
+            <div class="menu-group-title">Schedule</div>
+
+            <a th:href="@{/admin/schedules}"
+               class="menu-item"
+               th:classappend="${activeMenu == 'schedule'} ? ' active'">
+                Schedule
+            </a>
+
+            <a th:href="@{/admin/schedules/register}"
+               class="menu-item"
+               th:classappend="${activeMenu == 'scheduleRegister'} ? ' active'">
+                Schedule 등록
+            </a>
+        </div>
+
     </nav>
 </aside>
 
