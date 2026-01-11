@@ -3,9 +3,17 @@ package space.schedule.admin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import space.member.MemberService;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -13,6 +21,7 @@ import java.util.List;
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+    private final MemberService memberService;
 
     public List<Long> register(ScheduleRegisterRequest request){
 
@@ -69,4 +78,81 @@ public class ScheduleService {
             }
         }
     }
+
+    public ScheduleCalendarResponse getMonthlyCalendar(int year, int month){
+
+        // year/month 정규화
+        YearMonth yearMonth = YearMonth.of(year, 1).plusMonths(month - 1);
+
+        int fixedYear = yearMonth.getYear();
+        int fixedMonth = yearMonth.getMonthValue();
+
+        // 월의 시작 / 끝
+        LocalDate firstDay = yearMonth.atDay(1);
+        LocalDate lastDay = yearMonth.atEndOfMonth();
+
+        LocalDateTime start = firstDay.atStartOfDay();
+        LocalDateTime end = lastDay.atTime(LocalTime.MAX);
+
+        // 해당 월 스케줄 조회
+        List<Schedule> schedules = scheduleRepository.findByStartDateTimeBetween(start, end);
+
+        // 날짜별 그룹핑
+        Map<LocalDate, List<Schedule>> groupByDate =
+                schedules.stream()
+                        .collect(Collectors.groupingBy(s -> s.getStartDateTime().toLocalDate()));
+
+        // 날짜별 TargetSummary 생성
+        List<ScheduleCalendarResponse.DayScheduleSummary> days =
+                groupByDate.entrySet().stream()
+                        .map(entry->{
+                            LocalDate date = entry.getKey();
+                            List<Schedule> daySchedules = entry.getValue();
+
+                            List<ScheduleCalendarResponse.TargetSummary> targets =
+                                    extractTargetSummaries(daySchedules);
+
+                            return new ScheduleCalendarResponse.DayScheduleSummary(date, targets);
+                        })
+                        .sorted(Comparator.comparing(
+                                ScheduleCalendarResponse.DayScheduleSummary::getDate
+                        ))
+                        .toList();
+
+        return new ScheduleCalendarResponse(year, month, days);
+    }
+
+    // 날짜 안의 스케줄들에서 "대상 조합"만 추출
+    private List<ScheduleCalendarResponse.TargetSummary> extractTargetSummaries(
+            List<Schedule> schedules
+    ) {
+        return schedules.stream()
+                .map(this::toTargetSummary)
+                .distinct()
+                .toList();
+    }
+
+    private ScheduleCalendarResponse.TargetSummary toTargetSummary(
+            Schedule schedule
+    ) {
+        if (schedule.getTargetType() == ScheduleTargetType.GROUP) {
+            String code = schedule.getGroupCode();
+            return new ScheduleCalendarResponse.TargetSummary(
+                    code,
+                    "[" + code + "]"
+            );
+        }
+
+        // MEMBER
+        List<String> names = schedule.getScheduleMembers().stream()
+                .map(sm -> memberService.findNameById(sm.getMemberId()))
+                .sorted()
+                .toList();
+
+        String key = String.join(",", names);
+        String label = "[" + key + "]";
+
+        return new ScheduleCalendarResponse.TargetSummary(key, label);
+    }
+
 }
