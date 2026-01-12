@@ -155,4 +155,47 @@ public class ScheduleService {
         return new ScheduleCalendarResponse.TargetSummary(key, label);
     }
 
+    private String buildTargetsLabel(Schedule schedule){
+        // group 일정
+        if(schedule.getTargetType() == ScheduleTargetType.GROUP){
+            return "["+schedule.getGroupCode()+"]";
+        }
+
+        // member 일정
+        List<String> names = schedule.getScheduleMembers().stream()
+                .map(sm -> memberService.findNameById(sm.getMemberId()))
+                .sorted()
+                .toList();
+
+        return "[" + String.join(", ", names) + "]";
+    }
+
+    public ScheduleDayResponse getDaySchedule(LocalDate date){
+        LocalDateTime start = date.atStartOfDay();
+        LocalDateTime end = date.atTime(LocalTime.MAX);
+
+        List<Schedule> schedules = scheduleRepository.findByStartDateTimeBetween(start, end);
+
+        List<ScheduleDayResponse.ScheduleDetail> details =
+                schedules.stream()
+                        .map(this::toDetail)
+                        .toList();
+
+        return new ScheduleDayResponse(date, details);
+    }
+
+    private ScheduleDayResponse.ScheduleDetail toDetail(Schedule s){
+
+        String targets = buildTargetsLabel(s);
+
+        return new ScheduleDayResponse.ScheduleDetail(
+                s.getId(),
+                targets,
+                s.getContent(),
+                s.getStartDateTime().toLocalTime().toString(),
+                s.getEndDateTime().toLocalTime().toString(),
+                s.getPlace(),
+                s.getMemo()
+        );
+    };
 }

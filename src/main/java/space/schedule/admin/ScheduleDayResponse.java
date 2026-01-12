@@ -24,5 +24,6 @@ public class ScheduleDayResponse {
         private String endTime;
         private String place;
         private String memo;
+
     }
 }

@@ -18,8 +18,13 @@
     background: #f8f9fa;
 }
 
-.calendar-day.today {
-    border: 2px solid #0d6efd;
+.calendar-day.selected {
+    border: 2px solid #7c3aed;   /* 보라색 */
+    background-color: #f5f3ff;   /* 연보라 */
+}
+
+.calendar-day.today:not(.selected) {
+    border: 2px dashed #a78bfa;  /* 오늘 표시 */
 }
 
 .calendar-day-header {

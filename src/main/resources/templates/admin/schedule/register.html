@@ -18,7 +18,7 @@
         <div class="container mt-5 flex-grow-1">
             <h2 class="mb-4 fw-bold">Schedule Register</h2>
 
-            <form th:action="@{/admin/schedules/register}" method="post">
+            <form th:action="@{/admin/schedules/register}" method="post" th:object="${scheduleForm}">
 
                 <div class="mb-3">
                     <label class="form-label">대상</label>
@@ -46,11 +46,11 @@
                 <div class="row mb-3">
                     <div class="col">
                         <label class="form-label">시작 일시</label>
-                        <input type="datetime-local" class="form-control" name="startDateTime">
+                        <input type="datetime-local" class="form-control" name="startDateTime" th:field="*{startDateTime}">
                     </div>
                     <div class="col">
                         <label class="form-label">종료 일시</label>
-                        <input type="datetime-local" class="form-control" name="endDateTime">
+                        <input type="datetime-local" class="form-control" name="endDateTime" th:field="*{endDateTime}">
                     </div>
                 </div>
 

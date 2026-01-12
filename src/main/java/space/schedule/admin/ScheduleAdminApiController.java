@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/admin/api/schedules")
 @RequiredArgsConstructor
@@ -32,12 +34,10 @@ public class ScheduleAdminApiController {
     }
 
     /* 일자 상세 조회 */
-    /*
     @GetMapping("/day")
     public ScheduleDayResponse getDaySchedule(
-            @RequestParam
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+            @RequestParam LocalDate date
     ){
         return scheduleService.getDaySchedule(date);
-    }*/
+    }
 }

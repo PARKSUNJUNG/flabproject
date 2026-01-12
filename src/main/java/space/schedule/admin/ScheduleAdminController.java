@@ -20,9 +20,16 @@ public class ScheduleAdminController {
 
     /* 등록 화면 */
     @GetMapping("/register")
-    public String registerForm(Model model){
+    public String registerForm(
+            @RequestParam(required = false) LocalDate date, Model model){
 
-        model.addAttribute("scheduleForm", new ScheduleRegisterRequest());
+        LocalDate selectedDate = (date != null) ? date : LocalDate.now();
+
+        ScheduleRegisterRequest form  = new ScheduleRegisterRequest();
+        form.setStartDateTime(selectedDate.atTime(9, 0));
+        form.setEndDateTime(selectedDate.atTime(10, 0));
+
+        model.addAttribute("scheduleForm", form);
         model.addAttribute("members", memberService.findAllActive());
 
         return "admin/schedule/register";

@@ -57,10 +57,11 @@
 
                             <div id="schedule-list"></div>
 
-                            <button id="add-btn"
-                                    class="btn btn-primary w-100 mt-3">
+                            <a th:href="@{/admin/schedules/register}"
+                               id="add-btn"
+                               class="btn btn-primary w-100 mt-3">
                                 + 일정 추가
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -78,14 +79,34 @@
     }
     /*]]>*/
 
+    // 일정 추가 버튼을 누를때 해당 날짜도 넘긴다
+    document.addEventListener('DOMContentLoaded', () => {
+        const addBtn = document.getElementById('add-btn');
+
+        if (addBtn) {
+        addBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const date = selectedDate ?? today;
+                location.href = `/admin/schedules/register?date=${date}`;
+            });
+        }
+    });
+
     // 달력 렌더링
     const year = [[${year}]];
     const month = [[${month}]];
-    const today = '[[${today}]]';
+    const today = /*[[${today}]]*/ null;
+    let selectedDate = today;
 
     fetch(`/admin/api/schedules?year=${year}&month=${month}`)
         .then(res => res.json())
-        .then(renderCalendar);
+        .then(data => {
+            renderCalendar(data);
+
+            if (today) {
+                loadDayDetail(today);
+            }
+        });
 
     const colorMap = {};
 
@@ -123,6 +144,15 @@
 
             const div = document.createElement('div');
             div.className = 'calendar-day';
+            div.dataset.date = dateStr;
+
+            if (dateStr === today) {
+                div.classList.add('today');
+            }
+
+            if (dateStr === selectedDate) {
+                div.classList.add('selected');
+            }
 
             const scheduleDay = scheduleMap[dateStr];
 
@@ -142,9 +172,73 @@
                 </div>
             `;
 
-            div.onclick = () => loadDayDetail(dateStr);
+            div.onclick = () => selectDate(dateStr);
             calendar.appendChild(div);
         }
+    }
+
+    function selectDate(dateStr){
+        selectedDate = dateStr;
+
+        // 기존 선택 해제
+        document.querySelectorAll('.calendar-day.selected')
+            .forEach(el => el.classList.remove('selected'));
+
+        // 새 선택
+        const target = document.querySelector(`.calendar-day[data-date="${dateStr}"]`);
+        if (target) {
+            target.classList.add('selected');
+        }
+
+        loadDayDetail(dateStr);
+    }
+
+    function loadDayDetail(date){
+        fetch(`/admin/api/schedules/day?date=${date}`)
+            .then(res=>res.json())
+            .then(renderDayDetail);
+    }
+
+    function renderDayDetail(data){
+        document.getElementById('selected-date').innerText = data.date;
+
+        const container = document.getElementById('schedule-list');
+        container.innerHTML = '';
+
+        if(!data.schedules || data.schedules.length === 0){
+            container.innerHTML = '<p class="text-muted">일정 없음</p>';
+            return;
+        }
+
+        data.schedules.forEach(s => {
+            container.innerHTML += `
+                <div class="mb-2 p-2 border rounded">
+                    <!-- 요약 영역 (클릭 대상) -->
+                    <div class="p-2 schedule-summary"
+                         style="cursor:pointer"
+                         onclick="toggleDetail(this)">
+                        <div class="fw-bold">${s.targets}</div>
+                        <div class="text-muted small">
+                            ${s.startTime} ~ ${s.endTime}
+                        </div>
+                        <div>${s.content}</div>
+                    </div>
+
+                    <!-- 상세 영역 (토글) -->
+                    <div class="p-2 border-top bg-light schedule-detail"
+                         style="display:none;">
+                        <div><strong>장소</strong> : ${s.place ?? '-'}</div>
+                        <div><strong>메모</strong> : ${s.memo ?? '-'}</div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function toggleDetail(el) {
+        const detail = el.nextElementSibling;
+        detail.style.display =
+            detail.style.display === 'none' ? 'block' : 'none';
     }
 
 </script>
