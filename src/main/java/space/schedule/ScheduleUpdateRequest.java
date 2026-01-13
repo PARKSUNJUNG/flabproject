@@ -1,4 +1,4 @@
-package space.schedule.admin;
+package space.schedule;
 
 import lombok.Getter;
 import lombok.Setter;

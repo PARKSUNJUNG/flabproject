@@ -1,4 +1,4 @@
-package space.schedule.admin;
+package space.schedule;
 
 import jakarta.persistence.*;
 import lombok.Getter;
