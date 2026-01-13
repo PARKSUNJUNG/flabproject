@@ -101,4 +101,14 @@ public class ScheduleAdminController {
 
         return "redirect:/admin/schedules";
     }
+
+    /* 삭제 */
+    @PostMapping("/{id}/delete")
+    public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes){
+
+        scheduleService.delete(id);
+        redirectAttributes.addFlashAttribute("message", "일정이 삭제되었습니다.");
+
+        return "redirect:/admin/schedules";
+    }
 }

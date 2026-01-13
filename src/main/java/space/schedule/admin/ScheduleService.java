@@ -244,4 +244,11 @@ public class ScheduleService {
         return new ScheduleUpdateResponse(schedule.getId());
     }
 
+    public void delete(Long scheduleId){
+
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(()-> new IllegalArgumentException("스케줄 없음"));
+
+        scheduleRepository.delete(schedule);
+    }
 }
