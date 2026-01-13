@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Schedule 수정</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/admin/global_admin.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/schedule/edit.css}" />
+</head>
+<body>
+<div class="admin-layout">
+    <th:block th:replace="admin/fragments/sidebar :: adminSidebar('schedule')"/>
+
+    <main class="admin-content d-flex flex-column">
+        <div class="container mt-5 flex-grow-1">
+            <h2 class="mb-4 fw-bold">Schedule 수정</h2>
+
+            <form th:action="@{/admin/schedules/{id}(id=${schedule.scheduleId})}"
+                    method="post">
+
+                <div class="mb-3">
+                    <label class="form-label">대상</label>
+
+                    <select class="form-select" id="targetTypeSelect">
+                        <option value="">선택</option>
+                        <option value="GROUP"
+                                th:selected="${schedule.targetType.name() == 'GROUP'}">
+                            단체
+                        </option>
+                        <option value="MEMBER"
+                                th:selected="${schedule.targetType.name() == 'MEMBER'}">
+                             개인
+                        </option>
+                    </select>
+                </div>
+
+                <input type="hidden" name="target.type" id="targetTypeInput" th:value="${schedule.targetType}" />
+                <div id="groupTarget" style="display:none;">
+                    <input type="hidden" name="target.groupCode" value="Allday Project"/>
+
+                    <div class="alert alert-info">Allday Project</div>
+                </div>
+
+                <div id="memberTarget" style="display:none;">
+                    <div class="border rounded p-3 mb-4">
+
+                          <div class="fw-bold mb-2">멤버 조합</div>
+
+                          <div class="d-flex flex-wrap gap-3">
+                              <div class="form-check" th:each="m : ${members}">
+                                  <input class="form-check-input"
+                                          type="checkbox"
+                                          name="target.memberIds"
+                                          th:value="${m.id}"
+                                          th:checked="${schedule.memberIds.contains(m.id)}">
+                                  <label class="form-check-label" th:text="${m.name}"></label>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="row mb-3">
+                      <div class="col">
+                          <label class="form-label">시작 일시</label>
+                          <input type="datetime-local"
+                                  class="form-control"
+                                  name="startDateTime"
+                                  th:value="${#temporals.format(schedule.startDateTime, 'yyyy-MM-dd''T''HH:mm')}">
+                      </div>
+                      <div class="col">
+                          <label class="form-label">종료 일시</label>
+                          <input type="datetime-local"
+                                 class="form-control"
+                                 name="endDateTime"
+                                 th:value="${#temporals.format(schedule.endDateTime, 'yyyy-MM-dd''T''HH:mm')}">
+                      </div>
+                  </div>
+
+                  <div class="mb-3">
+                      <label class="form-label">장소</label>
+                      <input type="text"
+                             class="form-control"
+                             name="place"
+                             th:value="${schedule.place}">
+                  </div>
+
+                  <div class="mb-3">
+                      <label class="form-label">내용</label>
+                      <input type="text"
+                             class="form-control"
+                             name="content"
+                             th:value="${schedule.content}">
+                  </div>
+
+                  <div class="mb-3">
+                      <label class="form-label">메모</label>
+                      <textarea class="form-control"
+                                name="memo"
+                                rows="3"
+                                th:text="${schedule.memo}"></textarea>
+                  </div>
+
+                  <div class="d-flex gap-2">
+                      <button type="submit" class="btn btn-primary">수정</button>
+                      <a th:href="@{/admin/schedules}" class="btn btn-secondary">취소</a>
+                  </div>
+              </form>
+          </div>
+      </main>
+  </div>
+  <script th:inline="javascript">
+      document.addEventListener("DOMContentLoaded", () => {
+
+          const select = document.getElementById("targetTypeSelect");
+          const group = document.getElementById("groupTarget");
+          const member = document.getElementById("memberTarget");
+          const targetTypeInput = document.getElementById("targetTypeInput");
+
+          function toggleTarget(type) {
+              group.style.display = "none";
+              member.style.display = "none";
+
+              targetTypeInput.value = type;
+
+              if (type === "GROUP") {
+                  group.style.display = "block";
+              }
+
+              if (type === "MEMBER") {
+                  member.style.display = "block";
+              }
+          }
+
+          // 초기 상태 반영
+          toggleTarget(select.value);
+
+          // 대상 변경 시
+          select.addEventListener("change", function () {
+              toggleTarget(this.value);
+          });
+      });
+  </script>
+
+  </body>
+  </html>

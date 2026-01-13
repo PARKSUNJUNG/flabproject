@@ -46,3 +46,12 @@
     padding: 6px 0;
     border-bottom: 1px solid #e9ecef;
 }
+
+.schedule-summary:hover {
+    background-color: #f8f9fa;
+}
+
+.toggle-icon {
+    font-size: 0.9rem;
+    user-select: none;
+}

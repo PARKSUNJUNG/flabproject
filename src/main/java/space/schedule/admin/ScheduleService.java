@@ -197,5 +197,51 @@ public class ScheduleService {
                 s.getPlace(),
                 s.getMemo()
         );
-    };
+    }
+
+    @Transactional(readOnly = true)
+    public ScheduleUpdateViewResponse getUpdateView(Long scheduleId){
+
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new IllegalArgumentException("스케줄 없음"));
+
+        List<Long> memberIds = schedule.getTargetType() == ScheduleTargetType.MEMBER
+                ? schedule.getScheduleMembers().stream()
+                    .map(ScheduleMember::getMemberId)
+                    .toList()
+                : List.of();
+
+        return new ScheduleUpdateViewResponse(
+                schedule.getId(),
+                schedule.getTargetType(),
+                schedule.getGroupCode(),
+                memberIds,
+                schedule.getStartDateTime(),
+                schedule.getEndDateTime(),
+                schedule.getPlace(),
+                schedule.getContent(),
+                schedule.getMemo()
+        );
+    }
+
+    public ScheduleUpdateResponse update(ScheduleUpdateRequest request){
+
+        Schedule schedule = scheduleRepository.findById(request.getScheduleId())
+                .orElseThrow(()-> new IllegalArgumentException("스케줄 없음"));
+
+        schedule.update(
+                request.getStartDateTime(),
+                request.getEndDateTime(),
+                request.getPlace(),
+                request.getContent(),
+                request.getMemo()
+        );
+
+        if(request.getTarget() != null){
+            schedule.changeTarget(request.getTarget());
+        }
+
+        return new ScheduleUpdateResponse(schedule.getId());
+    }
+
 }

@@ -71,4 +71,35 @@ public class Schedule {
         }
         return s;
     }
+
+    public void update(
+            LocalDateTime start,
+            LocalDateTime end,
+            String place,
+            String content,
+            String memo
+    ){
+        this.startDateTime = start;
+        this.endDateTime = end;
+        this.place = place;
+        this.content = content;
+        this.memo = memo;
+    }
+
+    public void changeTarget(ScheduleTargetDto target) {
+        this.scheduleMembers.clear(); // orphanRemoval
+
+        if (target.getType() == ScheduleTargetType.GROUP) {
+            this.targetType = ScheduleTargetType.GROUP;
+            this.groupCode = target.getGroupCode();
+        } else {
+            this.targetType = ScheduleTargetType.MEMBER;
+            this.groupCode = null;
+
+            for (Long memberId : target.getMemberIds()) {
+                this.scheduleMembers.add(new ScheduleMember(this, memberId));
+            }
+        }
+    }
+
 }

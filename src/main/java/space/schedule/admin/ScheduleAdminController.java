@@ -74,4 +74,31 @@ public class ScheduleAdminController {
 
         return "admin/schedule/list";
     }
+
+    /* 수정 화면 */
+    @GetMapping("/{id}/edit")
+    public String editForm(
+            @PathVariable("id") Long scheduleId,
+            Model model
+    ){
+        ScheduleUpdateViewResponse view = scheduleService.getUpdateView(scheduleId);
+
+        model.addAttribute("schedule", view);
+        model.addAttribute("members", memberService.findAllActive());
+
+        return "admin/schedule/edit";
+    }
+
+    /* 수정 저장 */
+    @PostMapping("/{id}")
+    public String update(
+            @PathVariable("id") Long scheduleId,
+            @ModelAttribute ScheduleUpdateRequest request
+    ){
+        request.setScheduleId(scheduleId);
+
+        scheduleService.update(request);
+
+        return "redirect:/admin/schedules";
+    }
 }
