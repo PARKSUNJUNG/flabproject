@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Schedule</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/user/global.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/schedule/list.css}" />
+</head>
+<body class="bg-light">
+<div th:replace="user/fragments/header :: header"></div>
+
+<main>
+    <div class="container mt-5 flex-grow-1 pb-5">
+        <h2 class="mb-4 fw-bold">Schedule</h2>
+
+        <div class="row g-3">
+            <!-- 달력 -->
+            <div class="col-lg-8">
+                <!-- 헤더 -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <a class="btn btn-outline-secondary"
+                       th:href="@{/schedules(year=${year}, month=${month-1})}">
+                        ◀
+                    </a>
+
+                    <h4 class="mb-0" th:text="${year} + '년 ' + ${month} + '월'"></h4>
+
+                    <a class="btn btn-outline-secondary"
+                       th:href="@{/schedules(year=${year}, month=${month+1})}">
+                        ▶
+                    </a>
+                </div>
+
+                <div class="calendar-grid mb-2 text-center fw-bold">
+                    <div>일</div>
+                    <div>월</div>
+                    <div>화</div>
+                    <div>수</div>
+                    <div>목</div>
+                    <div>금</div>
+                    <div>토</div>
+                </div>
+
+                <div id="calendar" class="calendar-grid"></div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script th:inline="javascript">
+    // 달력 렌더링
+    const year = [[${year}]];
+    const month = [[${month}]];
+    const today = /*[[${today}]]*/ null;
+    let selectedDate = today;
+
+    fetch(`/api/schedules?year=${year}&month=${month}`)
+        .then(res => res.json())
+        .then(data => {
+            renderCalendar(data);
+
+            if (today) {
+                //loadDayDetail(today);
+            }
+        });
+
+    const colorMap = {};
+
+    function getColor(key) {
+        if (!colorMap[key]) {
+            colorMap[key] = `hsl(${Math.random() * 360}, 70%, 85%)`;
+        }
+        return colorMap[key];
+    }
+
+    function renderCalendar(data) {
+        const calendar = document.getElementById('calendar');
+        calendar.innerHTML = '';
+
+        const scheduleMap = {};
+        data.days.forEach(d => {
+            scheduleMap[d.date] = d;
+        });
+
+        const firstDate = new Date(data.year, data.month - 1, 1);
+        const lastDate = new Date(data.year, data.month, 0);
+
+        const firstDayOfWeek = firstDate.getDay(); // 요일을 숫자로 반환
+        const lastDay = lastDate.getDate();
+
+        /*  1. 앞쪽 빈칸 채우기 */
+        for (let i = 0; i < firstDayOfWeek; i++) {
+            calendar.appendChild(document.createElement('div'));
+        }
+
+        /*  2. 날짜 칸 생성 */
+        for (let day = 1; day <= lastDay; day++) {
+            const dateStr =
+                `${data.year}-${String(data.month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+
+            const div = document.createElement('div');
+            div.className = 'calendar-day';
+            div.dataset.date = dateStr;
+
+            if (dateStr === today) {
+                div.classList.add('today');
+            }
+
+            if (dateStr === selectedDate) {
+                div.classList.add('selected');
+            }
+
+            const scheduleDay = scheduleMap[dateStr];
+
+            div.innerHTML = `
+                <div class="calendar-day-header">${day}</div>
+                <div>
+                    ${
+                      scheduleDay
+                        ? scheduleDay.targets.map(t =>
+                            `<span class="target-badge"
+                                   style="background:${getColor(t.key)}">
+                                ${t.label}
+                             </span>`
+                          ).join('')
+                        : ''
+                    }
+                </div>
+            `;
+
+            div.onclick = () => selectDate(dateStr);
+            calendar.appendChild(div);
+        }
+
+        function selectDate(dateStr){
+            selectedDate = dateStr;
+
+            // 기존 선택 해제
+            document.querySelectorAll('.calendar-day.selected')
+                .forEach(el => el.classList.remove('selected'));
+
+            // 새 선택
+            const target = document.querySelector(`.calendar-day[data-date="${dateStr}"]`);
+            if (target) {
+                target.classList.add('selected');
+            }
+
+            //loadDayDetail(dateStr);
+        }
+    }
+</script>
+
+</body>
+</html>
