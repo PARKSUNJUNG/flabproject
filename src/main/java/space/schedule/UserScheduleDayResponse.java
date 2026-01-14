@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserScheduleDayResponse {
 
-    private String date;
+    private LocalDate date;
     private List<UserScheduleItem> schedules;
 
     @Getter

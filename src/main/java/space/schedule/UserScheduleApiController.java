@@ -33,10 +33,10 @@ public class UserScheduleApiController {
     }
 
     /* 일자 상세 조회 */
-//    @GetMapping("/day")
-//    public UserScheduleDayResponse getDay(
-//            @RequestParam String date
-//    ){
-//        return scheduleService.getDayForUser(LocalDate.parse(date));
-//    }
+    @GetMapping("/day")
+    public UserScheduleDayResponse getDay(
+            @RequestParam LocalDate date
+    ){
+        return scheduleService.getDayForUser(date);
+    }
 }

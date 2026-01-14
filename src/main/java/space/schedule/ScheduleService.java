@@ -251,4 +251,30 @@ public class ScheduleService {
 
         scheduleRepository.delete(schedule);
     }
+
+    public UserScheduleDayResponse getDayForUser(LocalDate date){
+
+        LocalDateTime start = date.atStartOfDay();
+        LocalDateTime end = date.atTime(LocalTime.MAX);
+
+        List<Schedule> schedules = scheduleRepository.findByStartDateTimeBetween(start, end);
+
+        List<UserScheduleDayResponse.UserScheduleItem> details =
+                schedules.stream()
+                        .map(this::toUserDetail)
+                        .toList();
+
+        return new UserScheduleDayResponse(date, details);
+    }
+    private UserScheduleDayResponse.UserScheduleItem toUserDetail(Schedule s){
+
+        String targets = buildTargetsLabel(s);
+
+        return new UserScheduleDayResponse.UserScheduleItem(
+                targets,
+                s.getStartDateTime().toLocalTime().toString(),
+                s.getEndDateTime().toLocalTime().toString(),
+                s.getContent()
+        );
+    }
 }

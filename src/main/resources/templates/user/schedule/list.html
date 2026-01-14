@@ -46,6 +46,17 @@
 
                 <div id="calendar" class="calendar-grid"></div>
             </div>
+
+            <!-- 일자 상세 -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 id="selected-date" class="card-title"></h5>
+
+                        <div id="schedule-list"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </main>
@@ -63,7 +74,7 @@
             renderCalendar(data);
 
             if (today) {
-                //loadDayDetail(today);
+                loadDayDetail(today);
             }
         });
 
@@ -134,22 +145,55 @@
             div.onclick = () => selectDate(dateStr);
             calendar.appendChild(div);
         }
+    }
 
-        function selectDate(dateStr){
-            selectedDate = dateStr;
+    function selectDate(dateStr){
+        selectedDate = dateStr;
 
-            // 기존 선택 해제
-            document.querySelectorAll('.calendar-day.selected')
-                .forEach(el => el.classList.remove('selected'));
+        // 기존 선택 해제
+        document.querySelectorAll('.calendar-day.selected')
+            .forEach(el => el.classList.remove('selected'));
 
-            // 새 선택
-            const target = document.querySelector(`.calendar-day[data-date="${dateStr}"]`);
-            if (target) {
-                target.classList.add('selected');
-            }
-
-            //loadDayDetail(dateStr);
+        // 새 선택
+        const target = document.querySelector(`.calendar-day[data-date="${dateStr}"]`);
+        if (target) {
+            target.classList.add('selected');
         }
+
+        loadDayDetail(dateStr);
+    }
+
+    function loadDayDetail(date){
+        fetch(`/api/schedules/day?date=${date}`)
+            .then(res=>res.json())
+            .then(renderDayDetail);
+    }
+
+    function renderDayDetail(data){
+        document.getElementById('selected-date').innerText = data.date;
+
+        const container = document.getElementById('schedule-list');
+        container.innerHTML = '';
+
+        if(!data.schedules || data.schedules.length === 0){
+            container.innerHTML = '<p class="text-muted">일정 없음</p>';
+            return;
+        }
+
+        data.schedules.forEach(s => {
+            container.innerHTML += `
+                <div class="p-2 schedule-summary d-flex justify-content-between align-items-center"
+                 style="cursor:pointer">
+                    <div>
+                        <div class="fw-bold">${s.targets}</div>
+                        <div class="text-muted small">
+                            ${s.startTime} ~ ${s.endTime}
+                        </div>
+                        <div>${s.content}</div>
+                    </div>
+                </div>
+            `;
+        });
     }
 </script>
 
