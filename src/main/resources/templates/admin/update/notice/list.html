@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Notice</title>
+
+    <link rel="stylesheet" th:href="@{/css/admin/global_admin.css}" />
+</head>
+<body>
+<div class="admin-layout">
+    <th:block th:replace="admin/fragments/sidebar :: adminSidebar('notice')"/>
+
+    <main class="admin-content d-flex flex-column">
+        <div class="container mt-5 flex-grow-1">
+            <h2 class="mb-4 fw-bold">Notice</h2>
+        </div>
+    </main>
+
+</div>
+</body>
+</html>

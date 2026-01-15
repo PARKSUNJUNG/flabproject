@@ -29,7 +29,7 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalArgumentException("카테고리 없음"));
 
         // 2. 썸네일 업로드
-        String thumbnailUrl = fileService.saveFile(req.getThumbnail(), FileCategory.PRODUCT_THUMBNAIL);
+        String thumbnailUrl = fileService.saveAndReturnUrl(req.getThumbnail(), FileCategory.PRODUCT_THUMBNAIL);
 
         // 3. Product 엔티티 생성
         Product product = req.toEntity();
@@ -54,7 +54,7 @@ public class ProductService {
                 ProductContents contents = c.toEntity();
 
                 if("image".equals(c.getType()) && c.getFile() != null && !c.getFile().isEmpty()){
-                    String path = fileService.saveFile(c.getFile(), FileCategory.PRODUCT_CONTENT);
+                    String path = fileService.saveAndReturnUrl(c.getFile(), FileCategory.PRODUCT_CONTENT);
                     contents.setContents(path);
                 } else {
                     contents.setContents(c.getContents());
@@ -110,7 +110,7 @@ public class ProductService {
 
         // 썸네일 update
         if(req.getThumbnail() != null && !req.getThumbnail().isEmpty()){
-            String thumbnailUrl = fileService.saveFile(req.getThumbnail(), FileCategory.PRODUCT_THUMBNAIL);
+            String thumbnailUrl = fileService.saveAndReturnUrl(req.getThumbnail(), FileCategory.PRODUCT_THUMBNAIL);
             product.setThumbnail(thumbnailUrl);
         }
 
@@ -143,7 +143,7 @@ public class ProductService {
                 ProductContents contents = c.toEntity();
 
                 if("image".equals(c.getType()) && c.getFile() != null && !c.getFile().isEmpty()){
-                    String path = fileService.saveFile(c.getFile(), FileCategory.PRODUCT_CONTENT);
+                    String path = fileService.saveAndReturnUrl(c.getFile(), FileCategory.PRODUCT_CONTENT);
                     contents.setContents(path);
                 } else {
                     contents.setContents(c.getContents());

@@ -18,7 +18,7 @@ public class FileService {
     @Value("${file.upload-path}")
     private String uploadPath;
 
-    public String saveFile(MultipartFile file, FileCategory category) {
+    public FileSaveResult saveFile(MultipartFile file, FileCategory category) {
         if(file == null || file.isEmpty()) return null;
 
         String dirPath = category.getDir();
@@ -38,7 +38,15 @@ public class FileService {
             throw new RuntimeException("파일 저장 실패", e);
         }
 
-        return "/uploads/" + dirPath + "/" +fileName; // DB에 저장할 경로
+        String filePath = "/uploads/" + dirPath + "/" +fileName; // DB에 저장할 경로
 
+        return new FileSaveResult(original, fileName, filePath);
+    }
+
+    public String saveAndReturnUrl(MultipartFile file, FileCategory category){
+
+        FileSaveResult result = saveFile(file, category);
+
+        return result.getFilePath();
     }
 }
