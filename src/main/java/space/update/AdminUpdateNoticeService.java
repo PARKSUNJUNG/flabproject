@@ -1,12 +1,19 @@
 package space.update;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import space.file.FileCategory;
 import space.file.FileSaveResult;
 import space.file.FileService;
+import space.page.PageRequestDto;
+import space.page.PageResponseDto;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -42,5 +49,25 @@ public class AdminUpdateNoticeService {
         UpdateNotice saved = updateNoticeRepository.save(notice);
 
         return AdminUpdateRegisterResponse.from(saved);
+    }
+
+    public PageResponseDto<AdminUpdateNoticeListResponse> getNoticeList(PageRequestDto req){
+
+        Pageable pageable = PageRequest.of(
+                req.getPage() - 1,
+                req.getSize(),
+                Sort.by(Sort.Direction.DESC, "createdAt")
+        );
+
+        List<UpdateNotice> notices = updateNoticeRepository.findAdminList(pageable);
+
+        long totalCount = updateNoticeRepository.countAdminList();
+
+        List<AdminUpdateNoticeListResponse> content =
+                notices.stream()
+                        .map(AdminUpdateNoticeListResponse::from)
+                        .toList();
+
+        return new PageResponseDto<>(content, req, totalCount);
     }
 }

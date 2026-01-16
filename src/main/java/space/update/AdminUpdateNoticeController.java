@@ -9,6 +9,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import space.file.FileCategory;
 import space.file.FileSaveResult;
 import space.file.FileService;
+import space.page.PageRequestDto;
+import space.page.PageResponseDto;
 
 import java.util.Map;
 
@@ -54,7 +56,12 @@ public class AdminUpdateNoticeController {
     }
 
     @GetMapping
-    public String list(Model model){
+    public String list(PageRequestDto req, Model model){
+
+        PageResponseDto<AdminUpdateNoticeListResponse> response =
+                adminUpdateNoticeService.getNoticeList(req);
+
+        model.addAttribute("response", response);
 
         return "admin/update/notice/list";
     }
