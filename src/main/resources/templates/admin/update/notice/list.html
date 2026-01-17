@@ -54,7 +54,7 @@
                         <td th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}"></td>
 
                         <td class="text-center">
-                            <a th:href="@{/admin/update/notices/{id}(id=${notice.id})}"
+                            <a th:href="@{/admin/update/notices/{id}/edit(id=${notice.id})}"
                                class="btn btn-sm btn-outline-secondary">
                                 수정
                             </a>
