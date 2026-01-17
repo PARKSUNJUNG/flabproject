@@ -90,4 +90,10 @@ public class AdminUpdateNoticeController {
 
         return "redirect:/admin/update/notices";
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseBody
+    public void delete(@PathVariable Long id){
+        adminUpdateNoticeService.delete(id);
+    }
 }
