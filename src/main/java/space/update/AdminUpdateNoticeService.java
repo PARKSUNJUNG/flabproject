@@ -130,4 +130,27 @@ public class AdminUpdateNoticeService {
 
         updateNoticeRepository.delete(notice);
     }
+
+    /* 사용자 */
+
+    /* 상세 조회 */
+    @Transactional(readOnly = true)
+    public UpdateNotice getDetail(Long id){
+        return updateNoticeRepository.findById(id)
+                .orElseThrow(()-> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
+    }
+
+    /* 상세 조회 - 이전글 */
+    @Transactional(readOnly = true)
+    public UpdateNotice getPrev(Long id){
+        return updateNoticeRepository.findTopByIdLessThanOrderByIdDesc(id)
+                .orElse(null);
+    }
+
+    /* 상세 조회 - 다음글 */
+    @Transactional(readOnly = true)
+    public UpdateNotice getNext(Long id){
+        return updateNoticeRepository.findTopByIdGreaterThanOrderByIdAsc(id)
+                .orElse(null);
+    }
 }

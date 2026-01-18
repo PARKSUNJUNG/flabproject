@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UpdateNoticeRepository extends JpaRepository<UpdateNotice, Long> {
@@ -22,4 +23,8 @@ public interface UpdateNoticeRepository extends JpaRepository<UpdateNotice, Long
             from UpdateNotice n
             """)
     long countAdminList();
+
+    Optional<UpdateNotice> findTopByIdLessThanOrderByIdDesc(Long id);
+
+    Optional<UpdateNotice> findTopByIdGreaterThanOrderByIdAsc(Long id);
 }
