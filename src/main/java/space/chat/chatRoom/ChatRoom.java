@@ -1,4 +1,4 @@
-package space.chat;
+package space.chat.chatRoom;
 
 import jakarta.persistence.*;
 import lombok.Getter;

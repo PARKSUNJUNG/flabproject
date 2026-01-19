@@ -21,20 +21,28 @@
 
         <!-- 메시지 영역 -->
         <div class="chat-messages">
-            <p class="text-muted text-center">
-                아직 메시지가 없습니다.
-            </p>
+            <div th:each="msg : ${messages}">
+                <div th:if="${msg.senderType.name() == 'USER'}" class="text-end mb-2">
+                    <span class="badge bg-primary" th:text="${msg.content}">내 메시지</span>
+                </div>
+
+                <div th:if="${msg.senderType.name() == 'MEMBER'}" class="text-start mb-2">
+                     <span class="badge bg-secondary" th:text="${msg.content}">상대 메시지</span>
+                </div>
+            </div>
         </div>
 
         <!-- 입력 영역 -->
         <div class="chat-input">
-            <form method="post" action="#">
+            <form method="post" th:action="@{/chat/message}">
+                <input type="hidden" name="roomId" th:value="${room.id}">
                 <div class="input-group">
                     <input type="text"
+                           name="content"
                            class="form-control"
                            placeholder="메시지를 입력하세요"
-                           disabled>
-                    <button class="btn btn-primary" disabled>전송</button>
+                           required>
+                    <button class="btn btn-primary">전송</button>
                 </div>
             </form>
         </div>

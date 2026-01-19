@@ -1,4 +1,4 @@
-package space.chat;
+package space.chat.chatRoom;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
@@ -9,7 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import space.chat.chatMessage.ChatMessage;
+import space.chat.chatMessage.ChatMessageRepository;
 import space.user.UserPrincipal;
+
+import java.util.List;
 
 
 @Controller
@@ -19,6 +23,7 @@ public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatMessageRepository chatMessageRepository;
 
     @GetMapping("/room")
     public String enterChatRoom(
@@ -47,8 +52,11 @@ public class ChatRoomController {
             throw new AccessDeniedException("접근 권한이 없습니다."); // 403 Forbidden
         }
 
+        List<ChatMessage> messages = chatMessageRepository.findByChatRoomOrderByCreatedAtAsc(room);
+
         model.addAttribute("room", room);
         model.addAttribute("member", room.getMember());
+        model.addAttribute("messages", messages);
 
         return "user/chat/room";
     }

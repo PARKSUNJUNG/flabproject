@@ -1,4 +1,4 @@
-package space.chat;
+package space.chat.chatRoom;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

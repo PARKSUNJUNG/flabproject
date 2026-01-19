@@ -1,4 +1,4 @@
-package space.chat;
+package space.chat.chatRoom;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import space.member.Member;
