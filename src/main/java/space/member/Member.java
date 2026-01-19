@@ -16,5 +16,11 @@ public class Member {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false, unique = true, length = 100)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
     private boolean active = true;
 }
