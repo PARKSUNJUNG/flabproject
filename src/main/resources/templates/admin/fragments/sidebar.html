@@ -70,6 +70,22 @@
             </a>
         </div>
 
+        <div class="menu-group">
+            <div class="menu-group-title">Member</div>
+
+<!--            <a th:href="@{/admin/schedules}"-->
+<!--               class="menu-item"-->
+<!--               th:classappend="${activeMenu == 'member'} ? ' active'">-->
+<!--                Schedule-->
+<!--            </a>-->
+
+            <a th:href="@{/admin/member/register}"
+               class="menu-item"
+               th:classappend="${activeMenu == 'memberAccount'} ? ' active'">
+                Member 등록
+            </a>
+        </div>
+
     </nav>
 </aside>
 

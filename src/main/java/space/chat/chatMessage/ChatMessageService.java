@@ -34,4 +34,23 @@ public class ChatMessageService {
 
         chatMessageRepository.save(message);
     }
+
+    public void sendMemberMessage(Long roomId, Long memberId, String content){
+
+        ChatRoom room = chatRoomRepository.findById(roomId)
+                .orElseThrow(()-> new IllegalArgumentException("채팅방이 존재하지 않습니다."));
+
+        if(!room.getMember().getId().equals(memberId)){
+            throw new AccessDeniedException("메시지 전송 권한이 없습니다.");
+        }
+
+        ChatMessage message = new ChatMessage(
+                room,
+                SenderType.MEMBER,
+                memberId,
+                content
+        );
+
+        chatMessageRepository.save(message);
+    }
 }

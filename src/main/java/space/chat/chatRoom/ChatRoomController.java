@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import space.chat.chatMessage.ChatMessage;
 import space.chat.chatMessage.ChatMessageRepository;
+import space.user.Role;
 import space.user.UserPrincipal;
 
 import java.util.List;
@@ -30,6 +31,10 @@ public class ChatRoomController {
             @RequestParam Long memberId,
             @AuthenticationPrincipal UserPrincipal userDetails
     ){
+        if (userDetails.getRole() != Role.USER) {
+            throw new AccessDeniedException("USER만 접근 가능");
+        }
+
         Long userId = userDetails.getId();
         ChatRoom room = chatRoomService.getOrCreateRoom(userId, memberId);
 

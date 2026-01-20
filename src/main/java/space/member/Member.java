@@ -1,8 +1,11 @@
 package space.member;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -23,4 +26,15 @@ public class Member {
     private String password;
 
     private boolean active = true;
+
+    private LocalDateTime createdAt;
+
+    @Builder
+    public Member(String name, boolean active, String email, String password) {
+        this.name = name;
+        this.active = active;
+        this.email = email;
+        this.password = password;
+        this.createdAt = LocalDateTime.now();
+    }
 }

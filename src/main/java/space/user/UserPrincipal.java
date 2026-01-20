@@ -16,10 +16,11 @@ public class UserPrincipal implements UserDetails {
     private final Long id;
     private final String email;
     private final String password;
+    private final Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority("ROLE_"+role.name()));
     }
 
     @Override public String getUsername() { return email; }
