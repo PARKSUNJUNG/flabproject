@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import space.chat.chatMessage.ChatMessage;
 import space.chat.chatMessage.ChatMessageRepository;
+import space.member.Member;
+import space.member.MemberRepository;
 import space.user.Role;
 import space.user.User;
 import space.user.UserPrincipal;
@@ -26,6 +28,7 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
+    private final MemberRepository memberRepository;
 
     @GetMapping("/list")
     public String chatList(
@@ -43,7 +46,15 @@ public class ChatRoomController {
         model.addAttribute("rooms", rooms);
 
         return "user/chat/list";
+    }
 
+    @GetMapping("/select")
+    public String selectMember(Model model){
+
+        List<Member> members = memberRepository.findByActiveTrue();
+        model.addAttribute("members", members);
+
+        return "user/chat/selectMember";
     }
 
     @GetMapping("/room")

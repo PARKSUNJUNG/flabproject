@@ -14,9 +14,15 @@
 
 <main>
     <div class="chat-container">
-        <!-- 상단 -->
-        <div class="chat-header">
-            <span th:text="${member.name}">연예인 이름</span> 님과의 채팅
+        <div class="chat-header d-flex align-items-center gap-2">
+            <a th:href="@{/chat/list}"
+               class="btn btn-sm btn-light border chat-back-btn">
+                ←
+            </a>
+
+            <span>
+                 <span th:text="${member.name}">연예인 이름</span> 님과의 채팅
+            </span>
         </div>
 
         <!-- 메시지 영역 -->
