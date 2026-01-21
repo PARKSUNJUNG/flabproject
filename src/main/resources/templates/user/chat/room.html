@@ -13,20 +13,20 @@
 <div th:replace="user/fragments/header :: header"></div>
 
 <main>
-    <div class="chat-container">
-        <div class="chat-header d-flex align-items-center gap-2">
+    <div class="container mt-4" style="max-width:600px">
+        <div class="d-flex align-items-center gap-2 mb-3">
             <a th:href="@{/chat/list}"
-               class="btn btn-sm btn-light border chat-back-btn">
+               class="chat-back-link">
                 ←
             </a>
 
-            <span>
-                 <span th:text="${member.name}">연예인 이름</span> 님과의 채팅
-            </span>
+            <h5 class="mb-0"
+                th:text="${member.name} + '님과의 채팅'">
+            </h5>
         </div>
 
         <!-- 메시지 영역 -->
-        <div class="chat-messages">
+        <div class="border p-3 mb-3" style="height:400px; overflow-y:auto;">
             <div th:each="msg : ${messages}">
                 <div th:if="${msg.senderType.name() == 'USER'}" class="text-end mb-2">
                     <span class="badge bg-primary" th:text="${msg.content}">내 메시지</span>
@@ -39,19 +39,17 @@
         </div>
 
         <!-- 입력 영역 -->
-        <div class="chat-input">
-            <form method="post" th:action="@{/chat/message}">
-                <input type="hidden" name="roomId" th:value="${room.id}">
-                <div class="input-group">
-                    <input type="text"
-                           name="content"
-                           class="form-control"
-                           placeholder="메시지를 입력하세요"
-                           required>
-                    <button class="btn btn-primary">전송</button>
-                </div>
-            </form>
-        </div>
+        <form method="post" th:action="@{/chat/message}">
+            <input type="hidden" name="roomId" th:value="${room.id}">
+            <div class="input-group">
+                <input type="text"
+                       name="content"
+                       class="form-control"
+                       placeholder="메시지를 입력하세요"
+                       required>
+                <button class="btn btn-primary">전송</button>
+            </div>
+        </form>
 
     </div>
 </main>

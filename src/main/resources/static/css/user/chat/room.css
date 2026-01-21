@@ -26,3 +26,13 @@
     border-top: 1px solid #ddd;
     padding: 10px;
 }
+
+.chat-back-link {
+    text-decoration: none;
+    color: #6b7280; /* 살짝 연한 회색 */
+    font-size: 18px;
+}
+
+.chat-back-link:hover {
+    color: #111;
+}

@@ -14,7 +14,17 @@
 
 <main>
   <div class="container mt-4" style="max-width:600px">
-    <h5 th:text="${user.name} + '님과의 채팅'"></h5>
+
+    <div class="d-flex align-items-center gap-2 mb-3">
+      <a th:href="@{/member/chat/list}"
+         class="chat-back-link">
+        ←
+      </a>
+
+      <h5 class="mb-0"
+          th:text="${user.name} + '님과의 채팅'">
+      </h5>
+    </div>
 
     <div class="border p-3 mb-3" style="height:400px; overflow-y:auto;">
       <div th:each="msg : ${messages}">

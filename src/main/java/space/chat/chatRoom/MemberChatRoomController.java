@@ -34,6 +34,10 @@ public class MemberChatRoomController {
 
         Long memberId = userDetails.getId();
 
+        List<ChatRoom> rooms = chatRoomRepository.findByMemberIdOrderByUpdatedAtDesc(memberId);
+
+        model.addAttribute("rooms", rooms);
+
         return "user/chat/memberList";
     }
 
