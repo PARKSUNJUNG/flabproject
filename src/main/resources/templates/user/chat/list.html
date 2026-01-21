@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/user/global.css}" />
+    <link rel="stylesheet" th:href="@{/css/user/chat/list.css}" />
+</head>
+<body>
+<div th:replace="user/fragments/header :: header"></div>
+
+<main>
+    <div class="container chat-container mt-4">
+        <div class="d-flex justify-content-between align-items-start mb-4">
+            <div>
+                <h3 class="fw-bold mb-1">채팅</h3>
+                <p class="text-muted small mb-0">
+                    멤버와 나눈 채팅 목록입니다.
+                </p>
+            </div>
+
+            <a href="/chat/member" class="btn btn-outline-primary btn-sm">
+                멤버 선택
+            </a>
+        </div>
+
+        <ul class="list-group notice-list">
+            <li class="list-group-item notice-item" th:each="room: ${rooms}">
+
+                <a th:href="@{/chat/room/{id}(id=${room.id})}"
+                   class="d-flex justify-content-between align-items-center
+                      text-decoration-none text-dark">
+
+                    <div class="d-flex align-items-center gap-3 notice-row">
+                        <span class="badge bg-primary-subtle text-primary">
+                            채팅
+                        </span>
+
+                        <span class="fw-medium notice-title" th:text="${room.member.name}">
+                            멤버명
+                        </span>
+                    </div>
+
+                    <span class="text-muted small"
+                          th:text="${#temporals.format(room.updatedAt, 'yyyy.MM.dd')}">
+                        2026.01.21
+                    </span>
+
+                </a>
+
+            </li>
+
+            <!-- 채팅이 없는 경우 -->
+            <li class="list-group-item text-center text-muted py-5"
+                th:if="${#lists.isEmpty(rooms)}">
+                아직 채팅이 없습니다.
+                <span class="small">멤버를 선택해 대화를 시작해보세요.</span>
+            </li>
+        </ul>
+    </div>
+</main>
+
+</body>
+</html>

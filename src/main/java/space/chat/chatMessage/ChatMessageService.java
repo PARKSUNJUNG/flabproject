@@ -33,6 +33,8 @@ public class ChatMessageService {
         );
 
         chatMessageRepository.save(message);
+
+        room.updateLastMessageTime();
     }
 
     public void sendMemberMessage(Long roomId, Long memberId, String content){

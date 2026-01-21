@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import space.chat.chatMessage.ChatMessage;
 import space.chat.chatMessage.ChatMessageRepository;
 import space.user.Role;
+import space.user.User;
 import space.user.UserPrincipal;
 
 import java.util.List;
@@ -25,6 +26,25 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
+
+    @GetMapping("/list")
+    public String chatList(
+            @AuthenticationPrincipal UserPrincipal userDetails,
+            Model model
+    ){
+        if(userDetails.getRole() != Role.USER){
+            throw new AccessDeniedException("USER만 접근 가능");
+        }
+
+        Long userId = userDetails.getId();
+
+        List<ChatRoom> rooms = chatRoomRepository.findByUserIdOrderByCreatedAtDesc(userId);
+
+        model.addAttribute("rooms", rooms);
+
+        return "user/chat/list";
+
+    }
 
     @GetMapping("/room")
     public String enterChatRoom(

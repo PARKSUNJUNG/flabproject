@@ -33,9 +33,17 @@ public class ChatRoom {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+
     public ChatRoom(User user, Member member) {
         this.user = user;
         this.member = member;
         this.createdAt = LocalDateTime.now();
+        this.updatedAt = this.createdAt;
+    }
+
+    public void updateLastMessageTime(){
+        this.updatedAt = LocalDateTime.now();
     }
 }
