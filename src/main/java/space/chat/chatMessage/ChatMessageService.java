@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import space.chat.chatRoom.ChatRoom;
 import space.chat.chatRoom.ChatRoomRepository;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -54,5 +56,26 @@ public class ChatMessageService {
         );
 
         chatMessageRepository.save(message);
+    }
+
+
+    public void broadcast(Long memberId, String content) {
+
+        // 1. 이 연예인과 채팅한 모든 방 조회
+        List<ChatRoom> rooms = chatRoomRepository.findByMemberId(memberId);
+
+        // 2. 각 방에 메시지 저장
+        for(ChatRoom room : rooms){
+            ChatMessage message = new ChatMessage(
+                    room,
+                    SenderType.MEMBER,
+                    memberId,
+                    content
+            );
+
+            chatMessageRepository.save(message);
+
+            room.updateLastMessageTime();
+        }
     }
 }

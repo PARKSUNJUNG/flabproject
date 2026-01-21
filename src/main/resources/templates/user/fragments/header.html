@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
 
@@ -18,7 +19,12 @@
 
         <!-- 오른쪽 : 메뉴 -->
         <ul class="nav-menu">
-            <li><a th:href="@{/chat/list}">Chat</a></li>
+            <li th:if="${isMember}">
+                <a th:href="@{/member/chat/list}">Chat</a>
+            </li>
+            <li th:if="${!isMember}">
+                <a th:href="@{/chat/list}">Chat</a>
+            </li>
             <li><a th:href="@{/update/notices}">Update</a></li>
             <li><a th:href="@{/products}">MD</a></li>
             <li><a th:href="@{/schedules}">Schedule</a></li>

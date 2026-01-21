@@ -5,11 +5,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import space.chat.chatMessage.ChatMessage;
 import space.chat.chatMessage.ChatMessageRepository;
+import space.chat.chatMessage.ChatMessageService;
 import space.user.Role;
 import space.user.UserPrincipal;
 
@@ -22,6 +21,22 @@ public class MemberChatRoomController {
 
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
+    private final ChatMessageService chatMessageService;
+
+    @GetMapping("/list")
+    public String chatList(
+            @AuthenticationPrincipal UserPrincipal userDetails,
+            Model model
+    ){
+        if(userDetails.getRole() != Role.MEMBER){
+            throw new AccessDeniedException("MEMBER만 접근 가능");
+        }
+
+        Long memberId = userDetails.getId();
+
+        return "user/chat/memberList";
+    }
+
 
     @GetMapping("/room/{roomId}")
     public String chatRoom(
@@ -51,5 +66,21 @@ public class MemberChatRoomController {
         model.addAttribute("messages", messages);
 
         return "/user/chat/memberRoom";
+    }
+
+    @PostMapping("/broadcast")
+    public String broadcast(
+            @RequestParam String content,
+            @AuthenticationPrincipal UserPrincipal memberDetails
+    ){
+        if(memberDetails.getRole() != Role.MEMBER){
+            throw new AccessDeniedException("MEMBER만 접근 가능");
+        }
+
+        Long memberId = memberDetails.getId();
+
+        chatMessageService.broadcast(memberId, content);
+
+        return "redirect:/member/chat/list";
     }
 }
