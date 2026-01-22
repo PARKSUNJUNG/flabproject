@@ -68,6 +68,7 @@ public class MemberChatRoomController {
         model.addAttribute("room", room);
         model.addAttribute("user", room.getUser());
         model.addAttribute("messages", messages);
+        model.addAttribute("loginMemberId", loginMemberId);
 
         return "/user/chat/memberRoom";
     }

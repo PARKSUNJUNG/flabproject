@@ -26,7 +26,7 @@
         </div>
 
         <!-- 메시지 영역 -->
-        <div class="border p-3 mb-3" style="height:400px; overflow-y:auto;">
+        <div class="border p-3 mb-3" id="chatMessages" style="height:400px; overflow-y:auto;">
             <div th:each="msg : ${messages}">
                 <div th:if="${msg.senderType.name() == 'USER'}" class="text-end mb-2">
                     <span class="badge bg-primary" th:text="${msg.content}">내 메시지</span>
@@ -39,10 +39,12 @@
         </div>
 
         <!-- 입력 영역 -->
-        <form method="post" th:action="@{/chat/message}">
+<!--        <form method="post" th:action="@{/chat/message}">-->
+        <form onsubmit="sendMessage(); return false;">
             <input type="hidden" name="roomId" th:value="${room.id}">
             <div class="input-group">
                 <input type="text"
+                       id="msg"
                        name="content"
                        class="form-control"
                        placeholder="메시지를 입력하세요"
@@ -53,6 +55,62 @@
 
     </div>
 </main>
+
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+
+<script th:inline="javascript">
+    const roomId = [[${room.id}]];
+    const senderId = [[${loginUserId}]]; // user 기준
+</script>
+
+<script>
+    let socket = new SockJS('/ws-chat');
+    let stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, () => {
+        stompClient.subscribe('/topic/chat/' + roomId, (message) => {
+            const chat = JSON.parse(message.body);
+            appendMessage(chat);
+        });
+    });
+
+    function sendMessage() {
+        const input = document.getElementById("msg");
+        if(!input.value.trim()) return;
+
+        stompClient.send("/app/chat.send", {}, JSON.stringify({
+            roomId: roomId,
+            senderId: senderId,
+            senderType: "USER",
+            content: input.value
+        }));
+
+        input.value = "";
+    }
+
+    function appendMessage(chat){
+        const box = document.getElementById("chatMessages");
+        const div = document.createElement("div");
+
+        if(chat.senderType === "USER"){
+            div.className = "text-end mb-2";
+            div.innerHTML = `<span class="badge bg-primary">${chat.content}</span>`;
+        } else {
+            div.className = "text-start mb-2";
+            div.innerHTML = `<span class="badge bg-secondary">${chat.content}</span>`;
+        }
+
+        box.appendChild(div);
+        box.scrollTop = box.scrollHeight;
+    }
+
+    window.addEventListener("beforeunload", () => {
+        if(stompClient){
+            stompClient.disconnect();
+        }
+    });
+</script>
 
 </body>
 </html>

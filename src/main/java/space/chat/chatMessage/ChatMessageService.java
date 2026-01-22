@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import space.chat.chatRoom.ChatRoom;
 import space.chat.chatRoom.ChatRoomRepository;
+import space.chat.websocket.ChatMessageDto;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class ChatMessageService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
 
-    public void sendUserMessage(Long roomId, Long userId, String content){
+    public ChatMessageDto sendUserMessage(Long roomId, Long userId, String content){
 
         ChatRoom room = chatRoomRepository.findById(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("채팅방이 존재하지 않습니다."));
@@ -37,9 +38,18 @@ public class ChatMessageService {
         chatMessageRepository.save(message);
 
         room.updateLastMessageTime();
+
+        return new ChatMessageDto(
+                message.getId(),
+                room.getId(),
+                message.getSenderType(),
+                message.getSenderId(),
+                message.getContent(),
+                message.getCreatedAt()
+        );
     }
 
-    public void sendMemberMessage(Long roomId, Long memberId, String content){
+    public ChatMessageDto sendMemberMessage(Long roomId, Long memberId, String content){
 
         ChatRoom room = chatRoomRepository.findById(roomId)
                 .orElseThrow(()-> new IllegalArgumentException("채팅방이 존재하지 않습니다."));
@@ -56,6 +66,15 @@ public class ChatMessageService {
         );
 
         chatMessageRepository.save(message);
+
+        return new ChatMessageDto(
+                message.getId(),
+                room.getId(),
+                message.getSenderType(),
+                message.getSenderId(),
+                message.getContent(),
+                message.getCreatedAt()
+        );
     }
 
 
