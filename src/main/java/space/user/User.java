@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.jspecify.annotations.Nullable;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 
@@ -53,5 +55,21 @@ public class User {
         this.address = address;
         this.addressDetail = addressDetail;
         this.createAt = createAt;
+    }
+
+    public void update(EditUserRequest req){
+        if (StringUtils.hasText(req.getName())) this.name = req.getName();
+        if (StringUtils.hasText(req.getNickname())) this.nickname = req.getNickname();
+        if (StringUtils.hasText(req.getPhone())) this.phone = req.getPhone();
+        if (StringUtils.hasText(req.getAddress())) this.address = req.getAddress();
+        if (StringUtils.hasText(req.getAddressDetail())) this.addressDetail = req.getAddressDetail();
+    }
+
+    public void changeEmail(String email) {
+        this.email = email;
+    }
+
+    public void changePassword(String encodedPassword) {
+        this.password = encodedPassword;
     }
 }

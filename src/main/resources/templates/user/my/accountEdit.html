@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원정보 수정</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/user/global.css}" />
+    <link rel="stylesheet" th:href="@{/css/user/my/myEdit.css}">
+</head>
+<body>
+<div th:replace="user/fragments/header :: header"></div>
+
+<main class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+
+            <h2 class="fw-semibold mb-4 pb-3">
+                회원정보 수정
+            </h2>
+
+            <form id="editForm">
+
+                <!-- 이메일 -->
+                <div class="mb-3">
+                    <label class="form-label">이메일</label>
+                    <div class="d-flex gap-2">
+                        <input type="email" id="email" class="form-control"
+                               th:value="${user.email}"
+                               data-origin-email="${user.email}">
+                        <button type="button" id="checkEmailBtn"
+                                class="btn btn-check-email">
+                            중복 체크
+                        </button>
+                    </div>
+                    <small id="emailCheckMsg" class="text-danger"></small>
+                </div>
+
+                <!-- 비밀번호 -->
+                <div class="mb-3">
+                    <label class="form-label">비밀번호</label>
+                    <input type="password" id="password" class="form-control"
+                           placeholder="변경 시에만 입력">
+                </div>
+
+                <!-- 이름 -->
+                <div class="mb-3">
+                    <label class="form-label">이름</label>
+                    <input type="text" id="name" th:value="${user.name}" class="form-control">
+                </div>
+
+                <!-- 닉네임 -->
+                <div class="mb-3">
+                    <label class="form-label">닉네임</label>
+                    <input type="text" id="nickname" th:value="${user.nickname}" class="form-control">
+                </div>
+
+                <!-- 성별 -->
+                <div class="mb-3">
+                    <label class="form-label">성별</label>
+                    <select id="gender" class="form-select">
+                        <option value="" selected disabled hidden>선택</option>
+                        <option value="M" th:selected="${user.gender == 'M'}">남성</option>
+                        <option value="F" th:selected="${user.gender == 'F'}">여성</option>
+                    </select>
+                </div>
+
+                <!-- 전화번호 -->
+                <div class="mb-3">
+                    <label class="form-label">전화번호</label>
+                    <input type="text" id="phone" th:value="${user.phone}" class="form-control">
+                </div>
+
+                <!-- 주소 -->
+                <div class="mb-3">
+                    <label class="form-label">주소</label>
+                    <input type="text" id="address" th:value="${user.address}" class="form-control">
+                </div>
+
+                <!-- 상세주소 -->
+                <div class="mb-4">
+                    <label class="form-label">상세주소</label>
+                    <input type="text" id="addressDetail" th:value="${user.addressDetail}" class="form-control">
+                </div>
+
+                <!-- 버튼 -->
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <button type="button"
+                            class="btn btn-outline-secondary btn-action"
+                            onclick="location.href='/my/list'">
+                        취소
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-submit btn-action">
+                        수정
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</main>
+
+<script type="module">
+    const form = document.getElementById("editForm");
+    const checkEmailBtn = document.getElementById("checkEmailBtn");
+    const emailCheckMsg = document.getElementById("emailCheckMsg");
+
+    let isEmailChecked = true; // 이메일 중복 체크 여부
+    const emailInput = document.getElementById("email");
+    const originEmail = emailInput.dataset.originEmail;
+
+    // 이메일 변경 감지
+    emailInput.addEventListener("input", ()=>{
+        if(emailInput.value !== originEmail){
+            isEmailChecked = false;
+        } else {
+            isEmailChecked = true;
+        }
+    });
+
+    // 중복 체크 버튼
+    checkEmailBtn.addEventListener("click", () => {
+        const email = emailInput.value;
+
+        fetch(`/account/checkemail?email=${encodeURIComponent(email)}`)
+            .then(res => res.json())
+            .then(data => {
+                emailCheckMsg.textContent = data.message;
+                emailCheckMsg.className = data.exists ? "text-danger" : "text-success";
+                isEmailChecked = !data.exists;
+            });
+    });
+
+    // 회원가입 제출 이벤트
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // 이메일 중복 체크 확인
+        if (emailInput.value !== originEmail && !isEmailChecked) {
+            alert("이메일 중복 체크를 해주세요.");
+            return;
+        }
+
+        const data = {
+            email: emailInput.value,
+            name: document.getElementById("name").value,
+            nickname: document.getElementById("nickname").value,
+            gender: document.getElementById("gender").value,
+            phone: document.getElementById("phone").value,
+            address: document.getElementById("address").value,
+            addressDetail: document.getElementById("addressDetail").value,
+        };
+
+        const res = await fetch("/account/edit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+        });
+
+        if (res.ok) {
+            alert("회원정보 수정 완료");
+            window.location.href = "/my/list";
+        } else {
+            const err = await res.text();
+            alert("회원정보 수정 실패: " + err);
+        }
+    });
+</script>
+</body>
+</html>

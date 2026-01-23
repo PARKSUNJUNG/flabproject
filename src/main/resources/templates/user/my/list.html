@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+
+    <link rel="stylesheet" th:href="@{/css/user/global.css}" />
+</head>
+<body>
+<div th:replace="user/fragments/header :: header"></div>
+
+<main>
+    <div class="container chat-container mt-4">
+        <div class="d-flex justify-content-between align-items-start mb-4">
+            <div>
+                <h3 class="fw-bold mb-1">마이페이지</h3>
+<!--                <p class="text-muted small mb-0">-->
+<!--                    멤버와 나눈 채팅 목록입니다.-->
+<!--                </p>-->
+            </div>
+
+            <ul class="list-group notice-list">
+                <li class="list-group-item notice-item">
+
+                    <a th:href="@{/account/edit}"
+                       class="d-flex justify-content-between align-items-center
+                      text-decoration-none text-dark">
+
+                        <div class="d-flex align-items-center gap-3 notice-row">
+                            <span class="badge bg-primary-subtle text-primary">
+                                회원정보 수정
+                            </span>
+                        </div>
+                    </a>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>
