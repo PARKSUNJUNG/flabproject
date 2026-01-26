@@ -27,4 +27,6 @@ public interface UpdateNoticeRepository extends JpaRepository<UpdateNotice, Long
     Optional<UpdateNotice> findTopByIdLessThanOrderByIdDesc(Long id);
 
     Optional<UpdateNotice> findTopByIdGreaterThanOrderByIdAsc(Long id);
+
+    List<UpdateNotice> findTop4ByOrderByCreatedAtDesc();
 }

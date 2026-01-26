@@ -4,14 +4,72 @@
     <meta charset="UTF-8">
     <title>Space</title>
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/user/global.css}" />
+    <link rel="stylesheet" th:href="@{/css/user/main.css}" />
+    <link rel="stylesheet" th:href="@{/css/user/footer.css}" />
 </head>
 <body>
 <div th:replace="user/fragments/header :: header"></div>
 
 <main>
-    <h1>메인 페이지</h1>
+    <section class="main-banner-wrapper">
+        <!-- 이미지 배너 -->
+        <div class="main-banner">
+            <div class="banner-overlay"></div>
+            <img
+                    th:src="@{/images/main_banner.jpg}"
+                    class="banner-img"
+                    alt="메인 배너 이미지"
+            />
+        </div>
+
+        <!-- 데스크탑 전용 텍스트 영역 -->
+        <div class="banner-side-text">
+            <div class="text-inner">
+                ALLDAY<br>PROJECT
+            </div>
+        </div>
+    </section>
+
+    <section class="notice-section container my-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold mb-0">공지사항</h3>
+            <a th:href="@{/update/notices}" class="text-decoration-none">
+                더보기 →
+            </a>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-3 col-sm-6" th:each="notice : ${noticeList}">
+
+                <a th:href="@{/notice/{id}(id=${notice.id})}"
+                   class="notice-card d-block h-100 text-decoration-none">
+
+<!--                    <div class="notice-icon">📢</div>-->
+                    <img th:src="@{/images/megaphone.svg}" alt="notice-icon" class="notice-icon">
+
+                    <div class="notice-body">
+                        <h5 class="notice-title"
+                            th:text="${notice.title}">
+                            공지 제목
+                        </h5>
+
+                        <p class="notice-date"
+                           th:text="${#temporals.format(notice.createdAt, 'yyyy.MM.dd')}">
+                        </p>
+                    </div>
+
+                </a>
+
+            </div>
+        </div>
+    </section>
+
 </main>
+
+<div th:replace="user/fragments/footer :: footer"></div>
 
 </body>
 </html>

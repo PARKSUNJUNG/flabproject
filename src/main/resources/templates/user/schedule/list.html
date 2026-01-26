@@ -8,6 +8,7 @@
           rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/user/global.css}" />
     <link rel="stylesheet" th:href="@{/css/admin/schedule/list.css}" />
+    <link rel="stylesheet" th:href="@{/css/user/footer.css}" />
 </head>
 <body class="bg-light">
 <div th:replace="user/fragments/header :: header"></div>
@@ -60,6 +61,8 @@
         </div>
     </div>
 </main>
+
+<div th:replace="user/fragments/footer :: footer"></div>
 
 <script th:inline="javascript">
     // 달력 렌더링

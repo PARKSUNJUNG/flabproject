@@ -153,4 +153,10 @@ public class AdminUpdateNoticeService {
         return updateNoticeRepository.findTopByIdGreaterThanOrderByIdAsc(id)
                 .orElse(null);
     }
+
+    /* 메인페이지 */
+    public List<UpdateNotice> findLatest(){
+
+        return updateNoticeRepository.findTop4ByOrderByCreatedAtDesc();
+    }
 }

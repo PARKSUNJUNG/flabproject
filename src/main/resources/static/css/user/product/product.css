@@ -1,3 +1,17 @@
+.product-layout {
+    position: relative;
+}
+
+.product-layout::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 16.6667%;
+    width: 1px;
+    background-color: #dee2e6;
+}
+
 .category-sidebar {
     border-right: 1px solid #eee;
 }

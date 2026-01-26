@@ -1,0 +1,44 @@
+.custom-navbar {
+    border: none !important;
+}
+
+.simple-corp-footer {
+    background: #5f5573;           /* 배경색 */
+    border-top: none;              /* 위 경계선 제거 (어두운 배경이라 불필요) */
+    margin-top: 6rem;
+    font-size: 0.85rem;
+    color: #fff;                   /* 기본 글씨 흰색 */
+}
+
+.footer-inner {
+    padding: 2rem 0 1rem;        /* ⬅ 아래 여백 추가 */
+    text-align: center;
+}
+
+/* 로고 */
+.footer-logo {
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    color: #fff;
+}
+
+/* 주소 */
+.footer-info {
+    margin-bottom: 0.8rem;
+    color: rgba(255, 255, 255, 0.85);   /* 살짝 연한 흰색 */
+}
+
+/* copyright */
+.footer-copy {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.65);
+    margin-bottom: 1.5rem;          /* ⬅ 바닥과 간격 */
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+    .footer-info {
+        line-height: 1.6;
+        padding: 0 1rem;
+    }
+}
