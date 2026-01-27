@@ -43,7 +43,7 @@ public class SecurityConfig {
                         .loginProcessingUrl("/admin/login") // 로그인 처리 URL
                         .usernameParameter("email")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/admin", true)
+                        .defaultSuccessUrl("/admin/schedules", true)
 
                 )
                 .userDetailsService(adminDetailsService)

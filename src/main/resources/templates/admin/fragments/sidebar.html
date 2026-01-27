@@ -4,17 +4,22 @@
 <!-- 사이드바 -->
 <aside class="admin-sidebar" th:fragment="adminSidebar(activeMenu)">
 
-    <h1 class="sidebar-title">ADMIN</h1>
+<!--    <h1 class="sidebar-title">ADMIN</h1>-->
+
+
+    <a th:href="@{/admin/schedules}" class="sidebar-title">
+        ADMIN
+    </a>
 
     <nav class="sidebar-menu">
 
-        <div class="menu-group">
-            <a th:href="@{/admin}"
-               class="menu-item"
-               th:classappend="${activeMenu == 'home'} ? ' active'">
-                관리자 홈
-            </a>
-        </div>
+<!--        <div class="menu-group">-->
+<!--            <a th:href="@{/admin}"-->
+<!--               class="menu-item"-->
+<!--               th:classappend="${activeMenu == 'home'} ? ' active'">-->
+<!--                관리자 홈-->
+<!--            </a>-->
+<!--        </div>-->
 
         <div class="menu-group">
             <div class="menu-group-title">Update</div>

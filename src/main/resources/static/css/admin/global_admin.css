@@ -72,6 +72,19 @@ input:-webkit-autofill:active {
     font-weight: 700;
     margin-bottom: 32px;
     color: #212529;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.sidebar-title-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.sidebar-title-link:hover {
+    opacity: 0.8; /* 선택 */
 }
 
 /* 메뉴 영역 */
@@ -109,3 +122,4 @@ input:-webkit-autofill:active {
     background-color: #e7f1ff;
     color: #0d6efd;
 }
+
