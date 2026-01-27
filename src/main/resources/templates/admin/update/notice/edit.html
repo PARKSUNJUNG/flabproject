@@ -19,7 +19,8 @@
 
             <h2 class="mb-4 fw-bold">Notice Edit</h2>
 
-            <form th:action="@{/admin/update/notices/{id}/edit(id=${notice.id})}"
+            <form id="noticeEditForm"
+                  th:action="@{/admin/update/notices/{id}/edit(id=${notice.id})}"
                   th:object="${notice}"
                   method="post"
                   enctype="multipart/form-data"
@@ -45,7 +46,7 @@
                 <div class="mb-3">
                     <label class="form-label fw-semibold">내용</label>
                     <div id="editor"></div>
-                    <input type="hidden" th:field="*{content}" id="content">
+                    <input type="hidden" name="content" id="content">
                 </div>
 
                 <div class="mb-3" th:if="${!#lists.isEmpty(notice.files)}">
@@ -89,6 +90,7 @@
 
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <script th:inline="javascript">
+
     const editor = new toastui.Editor({
         el: document.querySelector('#editor'),
         height: '400px',
@@ -118,7 +120,7 @@
     });
 
     // submit 시 content 채우기
-    document.querySelector('form').addEventListener('submit', function () {
+    document.getElementById('noticeEditForm').addEventListener('submit', function () {
         document.getElementById('content').value = editor.getHTML();
     });
 
