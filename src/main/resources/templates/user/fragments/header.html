@@ -29,6 +29,15 @@
             <li><a th:href="@{/products}">MD</a></li>
             <li><a th:href="@{/schedules}">Schedule</a></li>
             <li><a th:href="@{/my/list}">My</a></li>
+
+            <!-- 로그아웃 -->
+            <li sec:authorize="isAuthenticated()">
+                <form th:action="@{/account/logout}" method="post" class="logout-form">
+                    <button type="submit" class="logout-btn" title="로그아웃">
+                        <img th:src="@{/images/logout.svg}" alt="로그아웃">
+                    </button>
+                </form>
+            </li>
         </ul>
     </div>
 </nav>

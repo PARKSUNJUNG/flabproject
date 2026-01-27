@@ -107,3 +107,25 @@ input:-webkit-autofill:active {
 .nav-menu a:hover::after {
     width: 100%;
 }
+
+/* Logout */
+/* 헤더 로그아웃 */
+.nav-menu .logout-form {
+    margin: 0;
+}
+
+.nav-menu .logout-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.nav-menu .logout-btn img {
+    width: 18px;
+    height: 18px;
+    display: block;
+}
+
