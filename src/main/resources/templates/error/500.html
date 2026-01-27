@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>500 - 서버 오류</title>
+  <link rel="stylesheet" th:href="@{/css/error.css}">
+</head>
+<body>
+<div class="error-container">
+  <h1 class="error-code">500</h1>
+  <p class="error-message">서버에서 문제가 발생했습니다.<br>잠시 후 다시 시도해주세요.</p>
+  <a sec:authorize="hasRole('USER')" th:href="@{/}" class="home-btn">
+    홈으로 돌아가기
+  </a>
+</div>
+</body>
+</html>

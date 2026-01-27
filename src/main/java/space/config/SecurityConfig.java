@@ -35,8 +35,8 @@ public class SecurityConfig {
                 .securityMatcher("/admin/**")
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/login").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/admin/login", "/error/**").permitAll()
+                        .anyRequest().hasRole("ADMIN")
                 )
                 .formLogin(form -> form
                         .loginPage("/admin/login") // 로그인 페이지 URL
@@ -50,6 +50,9 @@ public class SecurityConfig {
                 .logout(logout-> logout
                         .logoutUrl("/admin/logout")
                         .logoutSuccessUrl("/admin/login")
+                )
+                .exceptionHandling(ex -> ex
+                        .accessDeniedPage("/error/403")  // 권한 없는 접근 시 이동할 페이지
                 );
 
         return http.build();
@@ -63,8 +66,8 @@ public class SecurityConfig {
                 //.securityMatcher("/**")
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/account/**").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/account/**", "/error/**").permitAll()
+                        .anyRequest().hasAnyRole("USER", "MEMBER")
                 )
                 .formLogin(form -> form
                         .loginPage("/account/login")
@@ -77,6 +80,9 @@ public class SecurityConfig {
                 .logout(logout-> logout
                         .logoutUrl("/account/logout")
                         .logoutSuccessUrl("/account/login")
+                )
+                .exceptionHandling(ex -> ex
+                        .accessDeniedPage("/error/403")
                 );
 
         return http.build();

@@ -1,0 +1,47 @@
+@font-face {
+    font-family: '문화재돌봄체_Regular';          /* 폰트 이름 */
+    src: url('/fonts/문화재돌봄체_Regular.ttf') format('truetype'); /* 폰트 경로 */
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    margin: 0;
+    font-family: '문화재돌봄체_Regular', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f8f9fa;
+    color: #343a40;
+}
+
+.error-container {
+    text-align: center;
+}
+
+.error-code {
+    font-size: 5rem;
+    font-weight: 700;
+    color: #B79DE8;
+    margin: 0;
+}
+
+.error-message {
+    font-size: 1.5rem;
+    margin: 16px 0 32px 0;
+}
+
+.home-btn {
+    text-decoration: none;
+    background-color: #B79DE8;
+    color: white;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.home-btn:hover {
+    background-color: #a989e8;
+}

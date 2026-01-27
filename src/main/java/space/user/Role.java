@@ -2,5 +2,6 @@ package space.user;
 
 public enum Role {
     USER,
-    MEMBER
+    MEMBER,
+    ADMIN
 }

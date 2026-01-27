@@ -1,10 +1,13 @@
 package space.administrator.domain;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import space.user.Role;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class AdminDetails implements UserDetails {
 
@@ -14,10 +17,9 @@ public class AdminDetails implements UserDetails {
         this.administrator = administrator;
     }
 
-    // 권한은 없으므로 빈 리스트를 반환하도록 한다
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        return List.of(new SimpleGrantedAuthority("ROLE_"+ Role.ADMIN));
     }
 
     @Override
