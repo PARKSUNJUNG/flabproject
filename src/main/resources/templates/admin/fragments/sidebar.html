@@ -1,25 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<!-- 사이드바 -->
+
 <aside class="admin-sidebar" th:fragment="adminSidebar(activeMenu)">
 
-<!--    <h1 class="sidebar-title">ADMIN</h1>-->
+    <div class="sidebar-header">
+        <a th:href="@{/admin/schedules}" class="sidebar-title">
+            ADMIN
+        </a>
 
-
-    <a th:href="@{/admin/schedules}" class="sidebar-title">
-        ADMIN
-    </a>
+        <form th:action="@{/admin/logout}" method="post" class="logout-form">
+            <button type="submit" class="logout-btn" title="로그아웃">
+                <img th:src="@{/images/logout.svg}" alt="로그아웃">
+            </button>
+        </form>
+    </div>
 
     <nav class="sidebar-menu">
-
-<!--        <div class="menu-group">-->
-<!--            <a th:href="@{/admin}"-->
-<!--               class="menu-item"-->
-<!--               th:classappend="${activeMenu == 'home'} ? ' active'">-->
-<!--                관리자 홈-->
-<!--            </a>-->
-<!--        </div>-->
 
         <div class="menu-group">
             <div class="menu-group-title">Update</div>
@@ -78,17 +75,12 @@
         <div class="menu-group">
             <div class="menu-group-title">Member</div>
 
-<!--            <a th:href="@{/admin/schedules}"-->
-<!--               class="menu-item"-->
-<!--               th:classappend="${activeMenu == 'member'} ? ' active'">-->
-<!--                Schedule-->
-<!--            </a>-->
-
             <a th:href="@{/admin/member/register}"
                class="menu-item"
                th:classappend="${activeMenu == 'memberAccount'} ? ' active'">
                 Member 등록
             </a>
+
         </div>
 
     </nav>
