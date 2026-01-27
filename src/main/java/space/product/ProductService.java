@@ -1,10 +1,15 @@
 package space.product;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import space.file.FileCategory;
 import space.file.FileService;
+import space.page.PageRequestDto;
+import space.page.PageResponseDto;
 import space.product.category.Category;
 import space.product.category.CategoryRepository;
 
@@ -77,11 +82,26 @@ public class ProductService {
 
     /** 상품 목록 */
     @Transactional(readOnly = true)
-    public List<ProductResponse> findAll() {
-        return productRepository.findAllWithOptionStock()
-                .stream()
+    public PageResponseDto<ProductResponse> findAll(PageRequestDto req) {
+
+        Pageable pageable = PageRequest.of(
+                req.getPage() -1,
+                req.getSize(),
+                Sort.by(
+                        Sort.Order.asc("category.name"),
+                        Sort.Order.asc("productName")
+                )
+        );
+
+        List<Product> products = productRepository.findAllWithOptionStock(pageable);
+
+        long totalCount = productRepository.countAllWithOptionStock();
+
+        List<ProductResponse> content = products.stream()
                 .map(ProductResponse::from)
                 .toList();
+
+        return new PageResponseDto<>(content, req, totalCount);
     }
 
     /** 상품 조회 (수정 화면용) */

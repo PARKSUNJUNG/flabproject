@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import space.page.PageRequestDto;
+import space.page.PageResponseDto;
 import space.product.category.CategoryService;
 
 @Controller
@@ -32,9 +34,11 @@ public class AdminProductController {
 
     /** 상품 목록 화면 */
     @GetMapping("/list")
-    public String listForm(Model model) {
+    public String listForm(PageRequestDto pageRequest, Model model) {
 
-        model.addAttribute("products", productService.findAll());
+        PageResponseDto<ProductResponse> products = productService.findAll(pageRequest);
+
+        model.addAttribute("products", products);
         return "admin/product/list";
     }
 

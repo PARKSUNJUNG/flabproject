@@ -18,9 +18,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         from Product p
         join fetch p.category c
         left join fetch p.optionStock
-        order by c.name asc, p.productName asc
     """)
-    List<Product> findAllWithOptionStock();
+    List<Product> findAllWithOptionStock(Pageable pageable);
+
+    @Query("""
+        select count(p)
+        from Product p
+    """)
+    long countAllWithOptionStock();
 
     @Query("""
          select p

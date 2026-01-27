@@ -21,9 +21,9 @@
 
             <!-- 제목 + 등록 버튼 -->
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="fw-bold">상품 목록</h2>
+                <h2 class="fw-bold">굿즈 목록</h2>
                 <a th:href="@{/admin/product/register}" class="btn btn-primary">
-                    상품 등록
+                    굿즈 등록
                 </a>
             </div>
 
@@ -42,8 +42,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="product, iter : ${products}">
-                        <td th:text="${iter.index + 1}"></td>
+                    <tr th:each="product, iter : ${products.content}">
+                        <td th:text="${(products.page - 1) * products.size + iter.index + 1}"></td>
 
                         <td>
                             <span th:text="${product.productName}"></span>
@@ -89,6 +89,14 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+
+        <!-- pagination -->
+        <div class="pagination-wrapper">
+            <div th:replace="admin/fragments/pagination :: pagination(
+                ${products},
+                '/admin/product/list'
+            )"></div>
         </div>
     </main>
 </div>

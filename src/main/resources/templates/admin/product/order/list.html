@@ -22,7 +22,7 @@
             <table class="table table-hover align-middle product-table mt-5">
                 <thead class="table-light text-center">
                 <tr>
-                    <th>주문번호</th>
+                    <th>#</th>
                     <th>주문자</th>
                     <th>연락처</th>
                     <th>주문상태</th>
@@ -33,8 +33,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="order : ${orders.content}">
-                    <td th:text="${order.orderId}" class="text-center"></td>
+                <tr th:each="order, iter : ${orders.content}">
+                    <td th:text="${(orders.page - 1) * orders.size + iter.index + 1}" class="text-center"></td>
                     <td th:text="${order.ordererName}" class="text-center"></td>
                     <td th:text="${order.ordererPhone}" class="text-center"></td>
 
