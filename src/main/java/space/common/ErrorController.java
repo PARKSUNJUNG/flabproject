@@ -26,6 +26,16 @@ public class ErrorController implements org.springframework.boot.webmvc.error.Er
 
         model.addAttribute("status", status);
 
+        String uri = (String) request.getAttribute(
+                "jakarta.servlet.error.request_uri"
+        );
+
+        String loginUrl = (uri != null && uri.startsWith("/admin"))
+                ? "/admin/login"
+                : "/account/login";
+
+        model.addAttribute("loginUrl", loginUrl);
+
         if(status == 403) return "error/403";
         if(status == 404) return "error/404";
         if(status == 500) return "error/500";

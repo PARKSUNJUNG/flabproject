@@ -19,7 +19,8 @@
         <div class="container mt-5 flex-grow-1">
             <h2 class="mb-4 fw-bold">Notice Register</h2>
 
-            <form th:action="@{/admin/update/notices/register}"
+            <form id="noticeRegistForm"
+                  th:action="@{/admin/update/notices/register}"
                   th:object="${request}"
                   method="post"
                   enctype="multipart/form-data"
@@ -47,8 +48,7 @@
                 <div class="mb-3">
                     <label class="form-label fw-semibold">내용</label>
                     <div id="editor"></div>
-
-                    <input type="hidden" th:field="*{content}">
+                    <input type="hidden" name="content" id="content">
                 </div>
 
                 <div class="mb-4">
@@ -105,7 +105,7 @@
     });
 
     // submit 시 content 채우기
-    document.querySelector('form').addEventListener('submit', function () {
+    document.getElementById('noticeRegistForm').addEventListener('submit', function () {
         document.getElementById('content').value = editor.getHTML();
     });
 </script>

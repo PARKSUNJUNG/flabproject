@@ -10,7 +10,7 @@
 <div class="error-container">
   <h1 class="error-code">403</h1>
   <p class="error-message">이 페이지에 접근할 권한이 없습니다.</p>
-  <a sec:authorize="hasRole('USER')" th:href="@{/account/login}" class="home-btn">
+  <a th:href="@{${loginUrl}}" class="home-btn">
     로그인으로 돌아가기
   </a>
 </div>

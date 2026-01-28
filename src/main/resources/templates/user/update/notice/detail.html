@@ -74,6 +74,12 @@
                         </div>
 
                         <div class="notice-nav">
+                            <a th:href="@{/update/notices}" class="notice-link">
+                                목록으로
+                            </a>
+                        </div>
+
+                        <div class="notice-nav">
                             <a class="next"
                                th:if="${next != null}"
                                th:href="@{/update/notices/{id}(id=${next.id})}"
