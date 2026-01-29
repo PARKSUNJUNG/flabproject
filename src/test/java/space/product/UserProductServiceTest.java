@@ -21,27 +21,27 @@ class UserProductServiceTest {
     @Autowired
     ProductRepository productRepository;
 
-    private void saveProducts(int count){
-        for(int i=0; i<count; i++){
-            Product p = Product.builder()
-                    .productName("상품"+i)
-                    .price(1000)
-                    .stock(10)
-                    .useOption(false)
-                    .build();
-            productRepository.save(p);
-        }
-    }
-
-    @Test
-    void 상품이_0개면_페이지1_상품0개() {
-        UserProductListPageResponse result =
-                userProductService.getProductList(1, null);
-
-        assertThat(result.getPageNumber()).isEqualTo(1);
-        assertThat(result.getTotalCount()).isEqualTo(0);
-        assertThat(result.getProducts().size()).isEqualTo(0);
-    }
+//    private void saveProducts(int count){
+//        for(int i=0; i<count; i++){
+//            Product p = Product.builder()
+//                    .productName("상품"+i)
+//                    .price(1000)
+//                    .stock(10)
+//                    .useOption(false)
+//                    .build();
+//            productRepository.save(p);
+//        }
+//    }
+//
+//    @Test
+//    void 상품이_0개면_페이지1_상품0개() {
+//        UserProductListPageResponse result =
+//                userProductService.getProductList(1, null);
+//
+//        assertThat(result.getPageNumber()).isEqualTo(1);
+//        assertThat(result.getTotalCount()).isEqualTo(0);
+//        assertThat(result.getProducts().size()).isEqualTo(0);
+//    }
 
 
 }

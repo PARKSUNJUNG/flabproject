@@ -1,6 +1,7 @@
 package space.chat.chatMessage;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ public class ChatMessageService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
     public ChatMessageDto sendUserMessage(Long roomId, Long userId, String content){
 
@@ -93,6 +95,21 @@ public class ChatMessageService {
             );
 
             chatMessageRepository.save(message);
+
+            ChatMessageDto response = new ChatMessageDto(
+                    message.getId(),
+                    room.getId(),
+                    SenderType.MEMBER,
+                    message.getSenderId(),
+                    message.getContent(),
+                    message.getCreatedAt()
+            );
+
+            // 채팅방 구독자에게 실시간 전송
+            simpMessagingTemplate.convertAndSend(
+                    "/topic/chat/" + room.getId(),
+                    response
+            );
 
             room.updateLastMessageTime();
         }
