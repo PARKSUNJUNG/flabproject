@@ -53,7 +53,7 @@
 
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn btn-primary">등록</button>
-                            <a th:href="@{/admin}" class="btn btn-secondary">취소</a>
+                            <a th:href="@{/admin/schedules}" class="btn btn-secondary">취소</a>
                         </div>
                     </form>
                 </div>
@@ -117,7 +117,7 @@
 
         if (res.ok) {
             alert("연예인 회원 등록 완료");
-            window.location.href = "/admin"; // 향후 회원 등록 리스트 화면으로 변경
+            window.location.href = "/admin/schedules";
         } else {
             const err = await res.text();
             alert("회원가입 실패: " + err);
