@@ -32,12 +32,12 @@
 
         <!-- 연예인 본인 -->
         <div th:if="${msg.senderType.name() == 'MEMBER'}" class="text-end mb-2">
-          <span class="badge bg-primary" th:text="${msg.content}">내 메시지</span>
+          <span class="badge bg-primary chat-badge" th:text="${msg.content}">내 메시지</span>
         </div>
 
         <!-- 팬 -->
         <div th:if="${msg.senderType.name() == 'USER'}" class="text-start mb-2">
-          <span class="badge bg-secondary" th:text="${msg.content}">상대 메시지</span>
+          <span class="badge bg-secondary chat-badge" th:text="${msg.content}">상대 메시지</span>
         </div>
 
       </div>

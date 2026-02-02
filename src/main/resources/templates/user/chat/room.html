@@ -30,11 +30,11 @@
         <div class="border p-3 mb-3" id="chatMessages" style="height:400px; overflow-y:auto;">
             <div th:each="msg : ${messages}">
                 <div th:if="${msg.senderType.name() == 'USER'}" class="text-end mb-2">
-                    <span class="badge bg-primary" th:text="${msg.content}">내 메시지</span>
+                    <span class="badge bg-primary chat-badge" th:text="${msg.content}">내 메시지</span>
                 </div>
 
                 <div th:if="${msg.senderType.name() == 'MEMBER'}" class="text-start mb-2">
-                     <span class="badge bg-secondary" th:text="${msg.content}">상대 메시지</span>
+                     <span class="badge bg-secondary chat-badge" th:text="${msg.content}">상대 메시지</span>
                 </div>
             </div>
         </div>

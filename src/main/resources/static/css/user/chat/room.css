@@ -46,3 +46,13 @@ main {
 .chat-back-link:hover {
     color: #111;
 }
+
+.chat-badge {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
+    max-width: 300px;
+    display: inline-block;
+    text-align: left;
+}
+
