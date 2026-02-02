@@ -70,7 +70,7 @@ public class MemberChatRoomController {
         model.addAttribute("messages", messages);
         model.addAttribute("loginMemberId", loginMemberId);
 
-        return "/user/chat/memberRoom";
+        return "user/chat/memberRoom";
     }
 
     @PostMapping("/broadcast")
