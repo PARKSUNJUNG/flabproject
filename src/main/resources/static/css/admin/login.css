@@ -1,3 +1,10 @@
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* -----------------------------------------
    기본 컬러 (파스텔 보라 톤)
 ------------------------------------------ */
@@ -62,9 +69,17 @@ input.form-control:-webkit-autofill {
     border-color: var(--purple-hover) !important;
 }
 
+
 /* -----------------------------------------
    카드 Hover
 ------------------------------------------ */
+.login-card {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    margin-top: -40px;
+}
+
 .card {
     transition: all 0.3s ease;
     border-radius: 16px !important;
@@ -73,4 +88,38 @@ input.form-control:-webkit-autofill {
 .card:hover {
     transform: translateY(-4px);
     box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+}
+
+
+@media (max-width: 576px) {
+    body {
+        padding-top: 40px;
+    }
+
+    .login-card {
+        max-width: 480px;
+        border-radius: 20px !important;
+    }
+
+    .card-body {
+        padding: 32px 24px !important;
+    }
+
+    .card {
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    .card:hover {
+        transform: none;
+    }
+
+    .form-control {
+        font-size: 17px;
+        padding: 14px 16px !important;
+    }
+
+    .custom-login-btn {
+        font-size: 17px;
+        padding: 14px !important;
+    }
 }
