@@ -19,6 +19,14 @@ public class UserProductDetailService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(()-> new IllegalArgumentException("상품 없음"));
 
+        product.getContents().forEach(content -> {
+            if ("text".equals(content.getType()) && content.getContents() != null) {
+                content.setContents(
+                        content.getContents().replaceAll("\\r?\\n", "<br>")
+                );
+            }
+        });
+
         boolean useOption = product.isUseOption();
 
         StockStatus stockStatus;
