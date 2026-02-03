@@ -9,9 +9,16 @@ main {
 }
 
 .chat-container {
-    max-width: 1100px;   /* 1000~1200 사이 취향 */
+    max-width: 1100px;
 }
 
 .notice-item:hover {
     background-color: #f8f9fa;
+}
+
+@media (min-width:576px) {
+    .chat-container {
+        padding-left: 100px;
+        padding-right: 100px;
+    }
 }
