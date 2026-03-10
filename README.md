@@ -1,5 +1,5 @@
-<img width="900" height="1600" alt="image" src="https://github.com/user-attachments/assets/366b74d7-06d2-4cff-8fa4-cf733eb836b7" />
-
+시연 영상: https://youtu.be/r4zSHhTBrio?si=LOShno9SylZtVDfo
+<img width="900" height="1600" alt="image" src="https://github.com/user-attachments/assets/5fa7bd3c-5abe-4f87-935f-5a9f83a5cbdd" />
 
 
 <img width="900" height="1600" alt="image" src="https://github.com/user-attachments/assets/77d755d4-e07c-4ab4-846c-561a13a14029" />
